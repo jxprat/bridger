@@ -21,7 +21,9 @@ DELTA_SPACE = 15
 
 WINDOW_WIDTH = 2 * EXTERNAL_MARGING + 2 * VISUAL_CARD_HEIGHT + 2 * DELTA_SPACE + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
 WINDOW_HEIGHT = 2 * EXTERNAL_MARGING + 2 * CARD_HEIGHT + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
+
 BG_COLOR = (21,77,0)
+LOGO_ICO = "images/bridger.png"
 
 SUITS = ('C', 'S', 'H', 'D')  # Clubs, Spades, Hearts, Daemonds
 RANK = ('A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K')
@@ -110,6 +112,7 @@ def load_image(filename, transparent=False):
 def main():
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption("Bridger!")
+    pygame.display.set_icon(pygame.image.load(LOGO_ICO))
     screen.fill(BG_COLOR)
 
     while True:
@@ -143,6 +146,6 @@ print "South Hand: ", SouthPlayerHand
 print "West Hand: ", WestPlayerHand
 
 
-#if __name__ == '__main__':
-#    pygame.init()
-#    main()
+if __name__ == '__main__':
+    pygame.init()
+    main()
