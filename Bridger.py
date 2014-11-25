@@ -19,15 +19,15 @@ EXTERNAL_MARGING = 50
 
 DELTA_SPACE = 15
 
-WINDOW_WIDTH = 2 * EXTERNAL_MARGING + 2 * VISUAL_CARD_HEIGHT + 2 * DELTA_SPACE + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
-WINDOW_HEIGHT = 2 * EXTERNAL_MARGING + 2 * CARD_HEIGHT + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
+WINDOW_WIDTH = 800 #2 * EXTERNAL_MARGING + 2 * VISUAL_CARD_HEIGHT + 2 * DELTA_SPACE + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
+WINDOW_HEIGHT = 600 #2 * EXTERNAL_MARGING + 2 * CARD_HEIGHT + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
 
 BG_COLOR = (21,77,0)
 LOGO_ICO = "images/bridger.png"
 
 SUITS = ('C', 'S', 'H', 'D')  # Clubs, Spades, Hearts, Daemonds
 RANK = ('A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K')
-VALUES = {'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13}
+VALUES = {'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'C': 0, 'D': 20, 'H': 40, 'S': 60}
 
 # Class Card
 # ---------------------------------------------------------------------
@@ -41,6 +41,12 @@ class Card:
 
     def get_rank(self):
         return self.rank
+
+    def __gt__(self,other):
+        if (self.suit == other.suit):
+            return VALUES [self.rank] > VALUES[other.rank]
+        else:
+            return self.suit > other.suit
 
     def __str__(self):
         return self.suit + self.rank
@@ -95,6 +101,9 @@ class Hand:
 
     def __iter__(self):
         return iter(self.hand_cards)
+
+    def __getitem__(self, ndx):
+        return self.hand_cards[ndx]
 # ---------------------------------------------------------------------
 
 # Functions
@@ -110,17 +119,19 @@ def load_image(filename, transparent=False):
     return image
 
 def main():
-    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))     # pygame.RESIZABLE)
     pygame.display.set_caption("Bridger!")
     pygame.display.set_icon(pygame.image.load(LOGO_ICO))
-    screen.fill(BG_COLOR)
 
     while True:
         for events in pygame.event.get():
             if events.type == QUIT:
                 sys.exit(0)
         #screen.blit(background_image, (0, 0))
-        pygame.display.flip()
+        screen.fill(BG_COLOR)
+        pygame.display.update()     # Podem passar una porcio de la pantalla per actualitzar aquest recuadre,
+        #pygame.display.flip()        sino funciona igual que aquesta altra funcio
+
     return 0
 
 print 'Hello Bridger!'
@@ -145,7 +156,6 @@ print "East Hand: ", EastPlayerHand
 print "South Hand: ", SouthPlayerHand
 print "West Hand: ", WestPlayerHand
 
-
-if __name__ == '__main__':
-    pygame.init()
-    main()
+#if __name__ == '__main__':
+#    pygame.init()
+#    main()
