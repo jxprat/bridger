@@ -216,17 +216,49 @@ pygame.display.set_icon(pygame.image.load(LOGO_ICO))
 
 screen.fill(BG_COLOR)
 
-draw_hand(screen, 300, 50, NorthPlayerHand, False)
+draw_hand(screen, 300, 50, NorthPlayerHand, True)
 pygame.draw.rect(screen, CARD_BAR, [300 - INTERNAL_MARGIN , 133, VISUAL_CARD_WIDTH*12+CARD_WIDTH+INTERNAL_MARGIN*2, 41], 0)
 draw_hand(screen, 400, 250, EastPlayerHand, False)
 draw_hand(screen, 300, 450, SouthPlayerHand, True)
 draw_hand(screen, 50, 250, WestPlayerHand, False)
 
 while True:
-	for events in pygame.event.get():
-		if events.type == QUIT:
+	for event in pygame.event.get():
+		if (event.type == QUIT):
 			sys.exit(0)
+		elif (event.type == KEYDOWN):			# Key pressed ...
+			keys = pygame.key.get_pressed()		# Wich key?
+			if keys[K_r]:						# Test key in keys[]
+				deck = Deck()
+				deck.shuffle()
+				NorthPlayerHand = Hand()
+				EastPlayerHand = Hand()
+				SouthPlayerHand = Hand()
+				WestPlayerHand = Hand()
 
+				for i in range(0,13):
+				    NorthPlayerHand.add_card(deck.deal_card())
+				    EastPlayerHand.add_card(deck.deal_card())
+				    SouthPlayerHand.add_card(deck.deal_card())
+				    WestPlayerHand.add_card(deck.deal_card())
+
+				draw_hand(screen, 300, 50, NorthPlayerHand, True)
+				pygame.draw.rect(screen, CARD_BAR, [300 - INTERNAL_MARGIN , 133, VISUAL_CARD_WIDTH*12+CARD_WIDTH+INTERNAL_MARGIN*2, 41], 0)
+				draw_hand(screen, 400, 250, EastPlayerHand, False)
+				draw_hand(screen, 300, 450, SouthPlayerHand, True)
+				draw_hand(screen, 50, 250, WestPlayerHand, False)
+		elif (event.type == KEYUP):
+			pass 	# Key released ...
+		elif (event.type == MOUSEBUTTONDOWN):
+			print "Mouse button pressed ..."
+			print pygame.mouse.get_pressed()
+			print pygame.mouse.get_pos()
+		elif (event.type == MOUSEBUTTONUP):
+			print "Mouse button released ..."
+			print pygame.mouse.get_pressed()
+			print pygame.mouse.get_pos()
+		else:
+			pass
     	#pygame.display.update()     # Podem passar una porcio de la pantalla per actualitzar aquest recuadre,
     	#pygame.display.flip()        # sino funciona igual que aquesta altra funcio
 
