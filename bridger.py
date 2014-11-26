@@ -9,11 +9,11 @@ from pygame.locals import *
 
 # Constants ...
 # ---------------------------------------------------------------------
-CARD_WIDTH = 100            # Width of the card
-CARD_HEIGHT = 146           # Height of th e card
+CARD_WIDTH = 79             # Width of the card
+CARD_HEIGHT = 123           # Height of th e card
 
-VISUAL_CARD_WIDTH = 30      # Width shown when cards are agrupped
-VISUAL_CARD_HEIGHT = 100    # Height shown when cards are in hand
+VISUAL_CARD_WIDTH = 15      # Width shown when cards are agrupped
+VISUAL_CARD_HEIGHT = 82     # Height shown when cards are in hand
 
 INTERNAL_MARGIN = 20
 EXTERNAL_MARGING = 50
@@ -154,6 +154,17 @@ def card2filename(card):
 		rank = '0' + rank
 	suit = card.get_suit().lower()
 	return filename + rank + suit + '.gif'
+
+def draw_hand(scr, posX, posY, hand, visible):
+	deltaX = 0
+	for card in hand:
+		if (visible):
+			img = load_image(card2filename(card))
+		else:
+			img = load_image("images/cards/back.gif")
+		scr.blit(img,(posX + deltaX, posY))
+		deltaX += VISUAL_CARD_WIDTH
+	pygame.display.flip()
 # ---------------------------------------------------------------------
 
 # Main program ...
@@ -199,13 +210,25 @@ pygame.display.set_caption("Bridger!")
 pygame.display.set_icon(pygame.image.load(LOGO_ICO))
 
 screen.fill(BG_COLOR)
-x = 0
-for card in NorthPlayerHand:
-	img = load_image(card2filename(card))
-	screen.blit(img,(100 + x,100))
-	x += VISUAL_CARD_WIDTH
-	pygame.display.flip()
-	time.sleep(1)
+
+#x = 0
+#for ndx in range (0,13):
+#	img1 = load_image(card2filename(NorthPlayerHand[ndx]))
+#	screen.blit(img1,(10 + x,10))
+#	img2 = load_image(card2filename(EastPlayerHand[ndx]))
+#	screen.blit(img2,(10 + x,150))
+#	img3 = load_image(card2filename(SouthPlayerHand[ndx]))
+#	screen.blit(img3,(10 + x,290))
+#	img4 = load_image(card2filename(WestPlayerHand[ndx]))
+#	screen.blit(img4,(10 + x,440))
+#	x += VISUAL_CARD_WIDTH
+#	pygame.display.flip()
+
+draw_hand(screen, 300, 50, NorthPlayerHand, True)
+draw_hand(screen, 400, 250, EastPlayerHand, False)
+draw_hand(screen, 300, 450, SouthPlayerHand, True)
+draw_hand(screen, 50, 250, WestPlayerHand, False)
+
 
 while True:
 	for events in pygame.event.get():
