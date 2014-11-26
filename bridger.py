@@ -124,7 +124,7 @@ class Hand:
         return self.hand_cards[ndx]
 # ---------------------------------------------------------------------
 
-# Functions
+# Functions ...
 # ---------------------------------------------------------------------
 def load_image(filename, transparent=False):
     try: image = pygame.image.load(filename)
@@ -136,24 +136,27 @@ def load_image(filename, transparent=False):
          image.set_colorkey(color, RLEACCEL)
     return image
 
-def main():
-    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))     # pygame.RESIZABLE)
-    pygame.display.set_caption("Bridger!")
-    pygame.display.set_icon(pygame.image.load(LOGO_ICO))
+def card2filename(card):
+	filename = 'images/cards/'
+	rank = card.get_rank().lower()
+	if (rank == 'a'):
+		rank = '01'
+	elif (rank == 't'):
+		rank = '10'
+	elif (rank == 'j'):
+		rank = '11'
+	elif (rank == 'q'):
+		rank = '12'
+	elif (rank == 'k'):
+		rank = '13'
+	else:
+		rank = '0' + rank
+	suit = card.get_suit().lower()
+	return filename + rank + suit + '.gif'
+# ---------------------------------------------------------------------
 
-    screen.fill(BG_COLOR)
-    img = pygame.image.load("images/cards/01h.gif")
-
-    while True:
-        for events in pygame.event.get():
-            if events.type == QUIT:
-                sys.exit(0)
-        screen.blit(img, (100, 100))
-        pygame.display.update()     # Podem passar una porcio de la pantalla per actualitzar aquest recuadre,
-        #pygame.display.flip()        # sino funciona igual que aquesta altra funcio
-
-    return 0
-
+# Main program ...
+# ---------------------------------------------------------------------
 print 'Hello Bridger!'
 print 'Window is ', WINDOW_WIDTH, WINDOW_HEIGHT
 deck = Deck()
@@ -186,7 +189,20 @@ print "New North Hand: ", NorthPlayerHand
 print "New East Hand: ", EastPlayerHand
 print "New South Hand: ", SouthPlayerHand
 print "New West Hand: ", WestPlayerHand
+# ---------------------------------------------------------------------
 
-if __name__ == '__main__':
-    pygame.init()
-    main()
+# Graphic part ...
+# ---------------------------------------------------------------------
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
+pygame.display.set_caption("Bridger!")
+pygame.display.set_icon(pygame.image.load(LOGO_ICO))
+
+while True:
+	for events in pygame.event.get():
+		if events.type == QUIT:
+			sys.exit(0)
+		screen.fill(BG_COLOR)
+		img = load_image("images/cards/01h.gif")
+		screen.blit(img, (100, 100))
+    	pygame.display.update()     # Podem passar una porcio de la pantalla per actualitzar aquest recuadre,
+    	#pygame.display.flip()        # sino funciona igual que aquesta altra funcio
