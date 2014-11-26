@@ -15,15 +15,20 @@ CARD_HEIGHT = 123           # Height of th e card
 VISUAL_CARD_WIDTH = 15      # Width shown when cards are agrupped
 VISUAL_CARD_HEIGHT = 82     # Height shown when cards are in hand
 
-INTERNAL_MARGIN = 20
-EXTERNAL_MARGING = 50
+INTERNAL_MARGIN = 10
+EXTERNAL_MARGIN = 20
 
 DELTA_SPACE = 15
 
-WINDOW_WIDTH = 800 #2 * EXTERNAL_MARGING + 2 * VISUAL_CARD_HEIGHT + 2 * DELTA_SPACE + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
-WINDOW_HEIGHT = 600 #2 * EXTERNAL_MARGING + 2 * CARD_HEIGHT + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
+WINDOW_WIDTH = 800 #2 * EXTERNAL_MARGIN + 2 * VISUAL_CARD_HEIGHT + 2 * DELTA_SPACE + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
+WINDOW_HEIGHT = 600 #2 * EXTERNAL_MARGIN + 2 * CARD_HEIGHT + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
 
-BG_COLOR = (21,77,0)
+BG_COLOR = (21, 77, 0)			# Background color of the table
+CARD_BAR = (203, 203, 203)		# Background color of the rectangle card bar
+VUL_COLOR = (203, 0, 0)			# Color when vulnerable
+NOT_VUL_COLOR = (0, 0, 0)		# Color when not vulnerable
+OTHER_BG = (153, 204, 204)
+
 LOGO_ICO = "images/bridger.png"
 
 SUITS = ('C', 'S', 'H', 'D')  # Clubs, Spades, Hearts, Daemonds
@@ -211,20 +216,8 @@ pygame.display.set_icon(pygame.image.load(LOGO_ICO))
 
 screen.fill(BG_COLOR)
 
-#x = 0
-#for ndx in range (0,13):
-#	img1 = load_image(card2filename(NorthPlayerHand[ndx]))
-#	screen.blit(img1,(10 + x,10))
-#	img2 = load_image(card2filename(EastPlayerHand[ndx]))
-#	screen.blit(img2,(10 + x,150))
-#	img3 = load_image(card2filename(SouthPlayerHand[ndx]))
-#	screen.blit(img3,(10 + x,290))
-#	img4 = load_image(card2filename(WestPlayerHand[ndx]))
-#	screen.blit(img4,(10 + x,440))
-#	x += VISUAL_CARD_WIDTH
-#	pygame.display.flip()
-
-draw_hand(screen, 300, 50, NorthPlayerHand, True)
+draw_hand(screen, 300, 50, NorthPlayerHand, False)
+pygame.draw.rect(screen, CARD_BAR, [300 - INTERNAL_MARGIN , 133, VISUAL_CARD_WIDTH*12+CARD_WIDTH+INTERNAL_MARGIN*2, 41], 0)
 draw_hand(screen, 400, 250, EastPlayerHand, False)
 draw_hand(screen, 300, 450, SouthPlayerHand, True)
 draw_hand(screen, 50, 250, WestPlayerHand, False)
