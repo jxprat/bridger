@@ -2,6 +2,7 @@
 # ---------------------------------------------------------------------
 import random
 import sys
+import time
 import pygame
 from pygame.locals import *
 # ---------------------------------------------------------------------
@@ -11,7 +12,7 @@ from pygame.locals import *
 CARD_WIDTH = 100            # Width of the card
 CARD_HEIGHT = 146           # Height of th e card
 
-VISUAL_CARD_WIDTH = 20      # Width shown when cards are agrupped
+VISUAL_CARD_WIDTH = 30      # Width shown when cards are agrupped
 VISUAL_CARD_HEIGHT = 100    # Height shown when cards are in hand
 
 INTERNAL_MARGIN = 20
@@ -197,12 +198,20 @@ screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE
 pygame.display.set_caption("Bridger!")
 pygame.display.set_icon(pygame.image.load(LOGO_ICO))
 
+screen.fill(BG_COLOR)
+x = 0
+for card in NorthPlayerHand:
+	img = load_image(card2filename(card))
+	screen.blit(img,(100 + x,100))
+	x += VISUAL_CARD_WIDTH
+	pygame.display.flip()
+	time.sleep(1)
+
 while True:
 	for events in pygame.event.get():
 		if events.type == QUIT:
 			sys.exit(0)
-		screen.fill(BG_COLOR)
-		img = load_image("images/cards/01h.gif")
-		screen.blit(img, (100, 100))
-    	pygame.display.update()     # Podem passar una porcio de la pantalla per actualitzar aquest recuadre,
+
+    	#pygame.display.update()     # Podem passar una porcio de la pantalla per actualitzar aquest recuadre,
     	#pygame.display.flip()        # sino funciona igual que aquesta altra funcio
+
