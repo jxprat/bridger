@@ -187,7 +187,6 @@ print "New East Hand: ", EastPlayerHand
 print "New South Hand: ", SouthPlayerHand
 print "New West Hand: ", WestPlayerHand
 
-
 if __name__ == '__main__':
     pygame.init()
     main()
