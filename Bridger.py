@@ -141,14 +141,16 @@ def main():
     pygame.display.set_caption("Bridger!")
     pygame.display.set_icon(pygame.image.load(LOGO_ICO))
 
+    screen.fill(BG_COLOR)
+    img = pygame.image.load("images/cards/01h.gif")
+
     while True:
         for events in pygame.event.get():
             if events.type == QUIT:
                 sys.exit(0)
-        #screen.blit(background_image, (0, 0))
-        screen.fill(BG_COLOR)
+        screen.blit(img, (100, 100))
         pygame.display.update()     # Podem passar una porcio de la pantalla per actualitzar aquest recuadre,
-        #pygame.display.flip()        sino funciona igual que aquesta altra funcio
+        #pygame.display.flip()        # sino funciona igual que aquesta altra funcio
 
     return 0
 
@@ -186,6 +188,6 @@ print "New South Hand: ", SouthPlayerHand
 print "New West Hand: ", WestPlayerHand
 
 
-#if __name__ == '__main__':
-#    pygame.init()
-#    main()
+if __name__ == '__main__':
+    pygame.init()
+    main()
