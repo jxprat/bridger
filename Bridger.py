@@ -93,6 +93,24 @@ class Hand:
             # Error ...
             pass
 
+    def max(self):
+        if (len(self.hand_cards) > 0):
+            max_card = self.hand_cards[0]
+            for card in self.hand_cards:
+                if (card > max_card):
+                    max_card = card
+            return max_card
+        else:
+            return False
+
+    def reorder(self):
+        ordered_hand = Hand()
+        for i in range(0,13):
+            card = self.max()
+            self.remove_card(card)
+            ordered_hand.add_card(card)
+        self.hand_cards = ordered_hand.hand_cards
+
     def __str__(self):
         hand_str = ""
         for card in self.hand_cards:
@@ -155,6 +173,18 @@ print "North Hand: ", NorthPlayerHand
 print "East Hand: ", EastPlayerHand
 print "South Hand: ", SouthPlayerHand
 print "West Hand: ", WestPlayerHand
+
+print "Reordering al hands ... "
+NorthPlayerHand.reorder()
+EastPlayerHand.reorder()
+SouthPlayerHand.reorder()
+WestPlayerHand.reorder()
+
+print "New North Hand: ", NorthPlayerHand
+print "New East Hand: ", EastPlayerHand
+print "New South Hand: ", SouthPlayerHand
+print "New West Hand: ", WestPlayerHand
+
 
 #if __name__ == '__main__':
 #    pygame.init()
