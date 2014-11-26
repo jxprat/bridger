@@ -229,7 +229,6 @@ draw_hand(screen, 400, 250, EastPlayerHand, False)
 draw_hand(screen, 300, 450, SouthPlayerHand, True)
 draw_hand(screen, 50, 250, WestPlayerHand, False)
 
-
 while True:
 	for events in pygame.event.get():
 		if events.type == QUIT:
