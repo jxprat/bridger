@@ -246,6 +246,8 @@ pygame.display.set_caption("Bridger!")
 pygame.display.set_icon(pygame.image.load(LOGO_ICO))
 
 screen.fill(BG_COLOR)
+## logo_image = pygame.transform.scale(load_image("images/Bridger Logo.png"), (100, 75))
+## screen.blit(logo_image, (WINDOW_WIDTH / 2 - 50 , WINDOW_HEIGHT / 2 - 37))
 
 draw_hand(screen, 300, 50, NorthPlayerHand, True)
 pygame.draw.rect(screen, CARD_BAR, [300 - INTERNAL_MARGIN , 133, VISUAL_CARD_WIDTH*12+CARD_WIDTH+INTERNAL_MARGIN*2, 41], 0)
@@ -259,7 +261,7 @@ while True:
 			sys.exit(0)
 		elif (event.type == KEYDOWN):			# Key pressed ...
 			keys = pygame.key.get_pressed()		# Wich key?
-			if keys[K_r]:						# Test key in keys[]
+			if keys[K_n]:						# Test key in keys[]
 				deck = Deck()
 				deck.shuffle()
 				NorthPlayerHand = Hand()
@@ -278,11 +280,15 @@ while True:
 				SouthPlayerHand.reorder()
 				WestPlayerHand.reorder()
 
-				draw_hand(screen, 300, 50, NorthPlayerHand, True)
+				draw_hand(screen, 300, 50, NorthPlayerHand, False)
 				pygame.draw.rect(screen, CARD_BAR, [300 - INTERNAL_MARGIN , 133, VISUAL_CARD_WIDTH*12+CARD_WIDTH+INTERNAL_MARGIN*2, 41], 0)
 				draw_hand(screen, 400, 250, EastPlayerHand, False)
 				draw_hand(screen, 300, 450, SouthPlayerHand, True)
 				draw_hand(screen, 50, 250, WestPlayerHand, False)
+			elif keys[K_h]:
+				draw_hand(screen, 300, 50, NorthPlayerHand, False)
+			elif keys[K_s]:
+				draw_hand(screen, 300, 50, NorthPlayerHand, True)
 		elif (event.type == KEYUP):
 			pass 	# Key released ...
 		elif (event.type == MOUSEBUTTONDOWN):
