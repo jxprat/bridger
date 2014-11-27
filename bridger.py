@@ -193,15 +193,20 @@ def card2filename(card):
 	suit = card.get_suit().lower()
 	return filename + rank + suit + '.gif'
 
-def draw_hand(scr, posX, posY, hand, visible):
-	deltaX = 0
+def draw_hand(scr, posX, posY, hand, visible, side):
+	delta = 0
 	for card in hand:
 		if (visible):
 			img = load_image(card2filename(card))
 		else:
 			img = load_image("images/cards/back.gif")
-		scr.blit(img,(posX + deltaX, posY))
-		deltaX += VISUAL_CARD_WIDTH
+		if(side == 'V'):
+			img = pygame.transform.rotate(img, 90)
+			scr.blit(img,(posX, posY + delta))
+			delta += VISUAL_CARD_WIDTH
+		else:
+			scr.blit(img,(posX + delta, posY))
+			delta += VISUAL_CARD_WIDTH
 	pygame.display.flip()
 
 def draw_ruler(scr, posX, posY, color):
@@ -255,12 +260,12 @@ screen.fill(BG_COLOR)
 ## logo_image = pygame.transform.scale(load_image("images/Bridger Logo.png"), (100, 75))
 ## screen.blit(logo_image, (WINDOW_WIDTH / 2 - 50 , WINDOW_HEIGHT / 2 - 37))
 
-draw_hand(screen, 300, 50, NorthPlayerHand, False)
+draw_hand(screen, 300, 50, NorthPlayerHand, False, 'H')
 draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
-draw_hand(screen, 400, 250, EastPlayerHand, False)
-draw_hand(screen, 300, 450, SouthPlayerHand, True)
+draw_hand(screen, 600, 200, EastPlayerHand, True, 'V')
+draw_hand(screen, 300, 450, SouthPlayerHand, True, 'H')
 draw_ruler(screen, 300 - INTERNAL_MARGIN , 533, NOT_VUL_COLOR)
-draw_hand(screen, 50, 250, WestPlayerHand, False)
+draw_hand(screen, 50, 200, WestPlayerHand, True, 'V')
 
 while True:
 	for event in pygame.event.get():
@@ -287,17 +292,17 @@ while True:
 				SouthPlayerHand.reorder()
 				WestPlayerHand.reorder()
 
-				draw_hand(screen, 300, 50, NorthPlayerHand, False)
+				draw_hand(screen, 300, 50, NorthPlayerHand, False, 'H')
 				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
-				draw_hand(screen, 400, 250, EastPlayerHand, False)
-				draw_hand(screen, 300, 450, SouthPlayerHand, True)
+				draw_hand(screen, 600, 200, EastPlayerHand, True, 'V')
+				draw_hand(screen, 300, 450, SouthPlayerHand, True, 'H')
 				draw_ruler(screen, 300 - INTERNAL_MARGIN , 533, NOT_VUL_COLOR)
-				draw_hand(screen, 50, 250, WestPlayerHand, False)
+				draw_hand(screen, 50, 200, WestPlayerHand, True, 'V')
 			elif keys[K_h]:
-				draw_hand(screen, 300, 50, NorthPlayerHand, False)
+				draw_hand(screen, 300, 50, NorthPlayerHand, False, 'H')
 				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
 			elif keys[K_s]:
-				draw_hand(screen, 300, 50, NorthPlayerHand, True)
+				draw_hand(screen, 300, 50, NorthPlayerHand, True, 'H')
 				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
 		elif (event.type == KEYUP):
 			pass 	# Key released ...
