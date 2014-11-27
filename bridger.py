@@ -130,6 +130,22 @@ class Hand:
         return self.hand_cards[ndx]
 # ---------------------------------------------------------------------
 
+# Class BridgePlayer
+# ---------------------------------------------------------------------
+class BridgePlayer:
+	def __init__(self, Pos, isVul, Hand, isDealer):
+		self.Position = Pos
+		self.MyCards = Hand
+		self.Vulnerability = isVul
+		self.Dealer = isDealer
+
+	def set_Vulnerability(self, v):
+		self.Vulnerability = v
+
+	def get_Vulnerability(self):
+		return self.Vulnerability
+# ---------------------------------------------------------------------
+
 # Functions ...
 # ---------------------------------------------------------------------
 def load_image(filename, transparent=False):
@@ -241,6 +257,11 @@ while True:
 				    EastPlayerHand.add_card(deck.deal_card())
 				    SouthPlayerHand.add_card(deck.deal_card())
 				    WestPlayerHand.add_card(deck.deal_card())
+
+				NorthPlayerHand.reorder()
+				EastPlayerHand.reorder()
+				SouthPlayerHand.reorder()
+				WestPlayerHand.reorder()
 
 				draw_hand(screen, 300, 50, NorthPlayerHand, True)
 				pygame.draw.rect(screen, CARD_BAR, [300 - INTERNAL_MARGIN , 133, VISUAL_CARD_WIDTH*12+CARD_WIDTH+INTERNAL_MARGIN*2, 41], 0)
