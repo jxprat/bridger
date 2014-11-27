@@ -13,7 +13,7 @@ CARD_WIDTH = 79             # Width of the card
 CARD_HEIGHT = 123           # Height of th e card
 
 VISUAL_CARD_WIDTH = 15      # Width shown when cards are agrupped
-VISUAL_CARD_HEIGHT = 82     # Height shown when cards are in hand
+VISUAL_CARD_HEIGHT = 83     # Height shown when cards are in hand
 
 INTERNAL_MARGIN = 15
 EXTERNAL_MARGIN = 20
@@ -196,21 +196,24 @@ def card2filename(card):
 def draw_hand(scr, posX, posY, hand, visible, side):
 	delta = 0
 	for card in hand:
-		if (visible):
+		if (visible):		# Show card
 			img = load_image(card2filename(card))
-		else:
+		else:				# Show back
 			img = load_image("images/cards/back.gif")
-		if(side == 'V'):
+		if(side == 'V'):	# Draw in vertical distribution
 			img = pygame.transform.rotate(img, 90)
 			scr.blit(img,(posX, posY + delta))
 			delta += VISUAL_CARD_WIDTH
-		else:
+		else:				# Draw in horizontal distribution
 			scr.blit(img,(posX + delta, posY))
 			delta += VISUAL_CARD_WIDTH
 	pygame.display.flip()
 
-def draw_ruler(scr, posX, posY, color):
-	pygame.draw.rect(scr, color, [posX , posY, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+def draw_ruler(scr, posX, posY, color, side):
+	if (side == 'H'):
+		pygame.draw.rect(scr, color, [posX , posY, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+	else:
+		pygame.draw.rect(scr, color, [posX , posY, CARD_RULER_HEIGHT, CARD_RULER_WIDTH], 0)
 	pygame.display.flip()
 # ---------------------------------------------------------------------
 
@@ -260,11 +263,12 @@ screen.fill(BG_COLOR)
 ## logo_image = pygame.transform.scale(load_image("images/Bridger Logo.png"), (100, 75))
 ## screen.blit(logo_image, (WINDOW_WIDTH / 2 - 50 , WINDOW_HEIGHT / 2 - 37))
 
-draw_hand(screen, 300, 50, NorthPlayerHand, False, 'H')
-draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
+draw_hand(screen, 300, EXTERNAL_MARGIN, NorthPlayerHand, False, 'H')
+draw_ruler(screen, 300 - INTERNAL_MARGIN, VISUAL_CARD_HEIGHT + EXTERNAL_MARGIN, VUL_COLOR, 'H')
 draw_hand(screen, 600, 200, EastPlayerHand, True, 'V')
+draw_ruler(screen, 600 - INTERNAL_MARGIN, VISUAL_CARD_HEIGHT + EXTERNAL_MARGIN, VUL_COLOR, 'V')
 draw_hand(screen, 300, 450, SouthPlayerHand, True, 'H')
-draw_ruler(screen, 300 - INTERNAL_MARGIN , 533, NOT_VUL_COLOR)
+draw_ruler(screen, 300 - INTERNAL_MARGIN, 533, NOT_VUL_COLOR, 'H')
 draw_hand(screen, 50, 200, WestPlayerHand, True, 'V')
 
 while True:
@@ -293,17 +297,17 @@ while True:
 				WestPlayerHand.reorder()
 
 				draw_hand(screen, 300, 50, NorthPlayerHand, False, 'H')
-				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN, 133, VUL_COLOR, 'H')
 				draw_hand(screen, 600, 200, EastPlayerHand, True, 'V')
 				draw_hand(screen, 300, 450, SouthPlayerHand, True, 'H')
-				draw_ruler(screen, 300 - INTERNAL_MARGIN , 533, NOT_VUL_COLOR)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN, 533, NOT_VUL_COLOR, 'H')
 				draw_hand(screen, 50, 200, WestPlayerHand, True, 'V')
 			elif keys[K_h]:
 				draw_hand(screen, 300, 50, NorthPlayerHand, False, 'H')
-				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN, 133, VUL_COLOR, 'H')
 			elif keys[K_s]:
 				draw_hand(screen, 300, 50, NorthPlayerHand, True, 'H')
-				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN, 133, VUL_COLOR, 'H')
 		elif (event.type == KEYUP):
 			pass 	# Key released ...
 		elif (event.type == MOUSEBUTTONDOWN):
