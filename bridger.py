@@ -135,15 +135,30 @@ class Hand:
 class BridgePlayer:
 	def __init__(self, Pos, isVul, Hand, isDealer):
 		self.Position = Pos
-		self.MyCards = Hand
+		self.MyHand = Hand()
 		self.Vulnerability = isVul
 		self.Dealer = isDealer
+
+	def set_Position(self, Pos):
+		self.Position = Pos
+
+	def get_Position(self):
+		return self.Position
 
 	def set_Vulnerability(self, v):
 		self.Vulnerability = v
 
-	def get_Vulnerability(self):
+	def isVulnerable(self):
 		return self.Vulnerability
+
+	def set_Hand(self, newHand):
+		self.MyHand = newHand
+
+	def set_Dealer(self, d):
+		self.Dealer = d
+
+	def isDealer(self):
+		return self.isDealer
 # ---------------------------------------------------------------------
 
 # Functions ...
