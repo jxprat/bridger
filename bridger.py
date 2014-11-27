@@ -25,11 +25,10 @@ WINDOW_HEIGHT = 600 #2 * EXTERNAL_MARGIN + 2 * CARD_HEIGHT + 2 * INTERNAL_MARGIN
 
 CARD_RULER_WIDTH = VISUAL_CARD_WIDTH * 12 + CARD_WIDTH + INTERNAL_MARGIN * 2
 CARD_RULER_HEIGHT = 40
-CARD_RULER_COLOR = (203, 203, 203)		# Background color of the rectangle card bar
 
 BG_COLOR = (21, 77, 0)			# Background color of the table
 VUL_COLOR = (203, 0, 0)			# Color when vulnerable
-NOT_VUL_COLOR = (0, 0, 0)		# Color when not vulnerable
+NOT_VUL_COLOR = (203, 203, 203)		# Color when not vulnerable
 OTHER_BG = (153, 204, 204)
 
 LOGO_ICO = "images/bridger.png"
@@ -205,8 +204,8 @@ def draw_hand(scr, posX, posY, hand, visible):
 		deltaX += VISUAL_CARD_WIDTH
 	pygame.display.flip()
 
-def draw_ruler(scr, posX, posY):
-	pygame.draw.rect(scr, CARD_RULER_COLOR, [posX , posY, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+def draw_ruler(scr, posX, posY, color):
+	pygame.draw.rect(scr, color, [posX , posY, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
 	pygame.display.flip()
 # ---------------------------------------------------------------------
 
@@ -257,10 +256,10 @@ screen.fill(BG_COLOR)
 ## screen.blit(logo_image, (WINDOW_WIDTH / 2 - 50 , WINDOW_HEIGHT / 2 - 37))
 
 draw_hand(screen, 300, 50, NorthPlayerHand, False)
-draw_ruler(screen, 300 - INTERNAL_MARGIN , 133)
+draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
 draw_hand(screen, 400, 250, EastPlayerHand, False)
 draw_hand(screen, 300, 450, SouthPlayerHand, True)
-draw_ruler(screen, 300 - INTERNAL_MARGIN , 533)
+draw_ruler(screen, 300 - INTERNAL_MARGIN , 533, NOT_VUL_COLOR)
 draw_hand(screen, 50, 250, WestPlayerHand, False)
 
 while True:
@@ -289,17 +288,17 @@ while True:
 				WestPlayerHand.reorder()
 
 				draw_hand(screen, 300, 50, NorthPlayerHand, False)
-				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
 				draw_hand(screen, 400, 250, EastPlayerHand, False)
 				draw_hand(screen, 300, 450, SouthPlayerHand, True)
-				draw_ruler(screen, 300 - INTERNAL_MARGIN , 533)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN , 533, NOT_VUL_COLOR)
 				draw_hand(screen, 50, 250, WestPlayerHand, False)
 			elif keys[K_h]:
 				draw_hand(screen, 300, 50, NorthPlayerHand, False)
-				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
 			elif keys[K_s]:
 				draw_hand(screen, 300, 50, NorthPlayerHand, True)
-				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133, VUL_COLOR)
 		elif (event.type == KEYUP):
 			pass 	# Key released ...
 		elif (event.type == MOUSEBUTTONDOWN):
