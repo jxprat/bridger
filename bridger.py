@@ -15,7 +15,7 @@ CARD_HEIGHT = 123           # Height of th e card
 VISUAL_CARD_WIDTH = 15      # Width shown when cards are agrupped
 VISUAL_CARD_HEIGHT = 82     # Height shown when cards are in hand
 
-INTERNAL_MARGIN = 10
+INTERNAL_MARGIN = 15
 EXTERNAL_MARGIN = 20
 
 DELTA_SPACE = 15
@@ -23,8 +23,11 @@ DELTA_SPACE = 15
 WINDOW_WIDTH = 800 #2 * EXTERNAL_MARGIN + 2 * VISUAL_CARD_HEIGHT + 2 * DELTA_SPACE + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
 WINDOW_HEIGHT = 600 #2 * EXTERNAL_MARGIN + 2 * CARD_HEIGHT + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH
 
+CARD_RULER_WIDTH = VISUAL_CARD_WIDTH * 12 + CARD_WIDTH + INTERNAL_MARGIN * 2
+CARD_RULER_HEIGHT = 40
+CARD_RULER_COLOR = (203, 203, 203)		# Background color of the rectangle card bar
+
 BG_COLOR = (21, 77, 0)			# Background color of the table
-CARD_BAR = (203, 203, 203)		# Background color of the rectangle card bar
 VUL_COLOR = (203, 0, 0)			# Color when vulnerable
 NOT_VUL_COLOR = (0, 0, 0)		# Color when not vulnerable
 OTHER_BG = (153, 204, 204)
@@ -201,6 +204,10 @@ def draw_hand(scr, posX, posY, hand, visible):
 		scr.blit(img,(posX + deltaX, posY))
 		deltaX += VISUAL_CARD_WIDTH
 	pygame.display.flip()
+
+def draw_ruler(scr, posX, posY):
+	pygame.draw.rect(scr, CARD_RULER_COLOR, [posX , posY, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+	pygame.display.flip()
 # ---------------------------------------------------------------------
 
 # Main program ...
@@ -249,10 +256,11 @@ screen.fill(BG_COLOR)
 ## logo_image = pygame.transform.scale(load_image("images/Bridger Logo.png"), (100, 75))
 ## screen.blit(logo_image, (WINDOW_WIDTH / 2 - 50 , WINDOW_HEIGHT / 2 - 37))
 
-draw_hand(screen, 300, 50, NorthPlayerHand, True)
-pygame.draw.rect(screen, CARD_BAR, [300 - INTERNAL_MARGIN , 133, VISUAL_CARD_WIDTH*12+CARD_WIDTH+INTERNAL_MARGIN*2, 41], 0)
+draw_hand(screen, 300, 50, NorthPlayerHand, False)
+draw_ruler(screen, 300 - INTERNAL_MARGIN , 133)
 draw_hand(screen, 400, 250, EastPlayerHand, False)
 draw_hand(screen, 300, 450, SouthPlayerHand, True)
+draw_ruler(screen, 300 - INTERNAL_MARGIN , 533)
 draw_hand(screen, 50, 250, WestPlayerHand, False)
 
 while True:
@@ -281,14 +289,17 @@ while True:
 				WestPlayerHand.reorder()
 
 				draw_hand(screen, 300, 50, NorthPlayerHand, False)
-				pygame.draw.rect(screen, CARD_BAR, [300 - INTERNAL_MARGIN , 133, VISUAL_CARD_WIDTH*12+CARD_WIDTH+INTERNAL_MARGIN*2, 41], 0)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133)
 				draw_hand(screen, 400, 250, EastPlayerHand, False)
 				draw_hand(screen, 300, 450, SouthPlayerHand, True)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN , 533)
 				draw_hand(screen, 50, 250, WestPlayerHand, False)
 			elif keys[K_h]:
 				draw_hand(screen, 300, 50, NorthPlayerHand, False)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133)
 			elif keys[K_s]:
 				draw_hand(screen, 300, 50, NorthPlayerHand, True)
+				draw_ruler(screen, 300 - INTERNAL_MARGIN , 133)
 		elif (event.type == KEYUP):
 			pass 	# Key released ...
 		elif (event.type == MOUSEBUTTONDOWN):
