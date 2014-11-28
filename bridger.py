@@ -205,7 +205,8 @@ def draw_hand(scr, posX, posY, hand, visible, color):
 			img = load_image("images/cards/back.gif")
 		scr.blit(img,(posX + delta, posY))
 		delta += VISUAL_CARD_WIDTH
-	draw_ruler(scr, posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, color)
+	# draw_ruler(scr, posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, color)
+	pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
 	pygame.display.flip()
 
 # ---------------------------------------------------------------------
