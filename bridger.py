@@ -163,6 +163,18 @@ class BridgePlayer:
 		return self.isDealer
 # ---------------------------------------------------------------------
 
+# Class BridgeTable
+# ---------------------------------------------------------------------
+class BridgeTable:
+	def __init__(self):
+		self.table_deck = Deck()
+		self.table_deck.shuffle()
+		#self.player_N = BridgePlayer('N')
+		print "Bridge Table:"
+		print self.table_deck
+
+# ---------------------------------------------------------------------
+
 # Functions ...
 # ---------------------------------------------------------------------
 def load_image(filename, transparent=False):
@@ -193,9 +205,6 @@ def card2filename(card):
 	suit = card.get_suit().lower()
 	return filename + rank + suit + '.gif'
 
-def draw_ruler(scr, posX, posY, color):
-	pygame.draw.rect(scr, color, [posX , posY, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
-
 def draw_hand(scr, posX, posY, hand, visible, color):
 	delta = 0
 	for card in hand:
@@ -205,7 +214,6 @@ def draw_hand(scr, posX, posY, hand, visible, color):
 			img = load_image("images/cards/back.gif")
 		scr.blit(img,(posX + delta, posY))
 		delta += VISUAL_CARD_WIDTH
-	# draw_ruler(scr, posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, color)
 	pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
 	pygame.display.flip()
 
@@ -218,6 +226,8 @@ print 'Window is ', WINDOW_WIDTH, WINDOW_HEIGHT
 deck = Deck()
 deck.shuffle()
 print deck
+
+br_table = BridgeTable()
 
 NorthPlayerHand = Hand()
 EastPlayerHand = Hand()
