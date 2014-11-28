@@ -17,7 +17,7 @@ VISUAL_CARD_WIDTH = 15      # Width shown when cards are agrupped
 INTERNAL_MARGIN = 15
 EXTERNAL_MARGIN = 20
 
-DELTA_SPACE = 80
+DELTA_SPACE = 120
 
 CARD_RULER_WIDTH = VISUAL_CARD_WIDTH * 12 + CARD_WIDTH + INTERNAL_MARGIN * 2
 CARD_RULER_HEIGHT = 40
@@ -193,27 +193,19 @@ def card2filename(card):
 	suit = card.get_suit().lower()
 	return filename + rank + suit + '.gif'
 
-def draw_ruler(scr, posX, posY, color, side):
-	if (side == 'H'):
-		pygame.draw.rect(scr, color, [posX , posY, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
-	else:
-		pygame.draw.rect(scr, color, [posX , posY, CARD_RULER_HEIGHT, CARD_RULER_WIDTH], 0)
+def draw_ruler(scr, posX, posY, color):
+	pygame.draw.rect(scr, color, [posX , posY, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
 	pygame.display.flip()
 
-def draw_hand(scr, posX, posY, hand, visible, side):
+def draw_hand(scr, posX, posY, hand, visible):
 	delta = 0
 	for card in hand:
 		if (visible):		# Show card
 			img = load_image(card2filename(card))
 		else:				# Show back
 			img = load_image("images/cards/back.gif")
-		if(side == 'V'):	# Draw in vertical distribution
-			img = pygame.transform.rotate(img, 90)
-			scr.blit(img,(posX, posY + delta))
-			delta += VISUAL_CARD_WIDTH
-		else:				# Draw in horizontal distribution
-			scr.blit(img,(posX + delta, posY))
-			delta += VISUAL_CARD_WIDTH
+		scr.blit(img,(posX + delta, posY))
+		delta += VISUAL_CARD_WIDTH
 	pygame.display.flip()
 
 # ---------------------------------------------------------------------
@@ -264,17 +256,17 @@ screen.fill(BG_COLOR)
 ## logo_image = pygame.transform.scale(load_image("images/Bridger Logo.png"), (100, 75))
 ## screen.blit(logo_image, (WINDOW_WIDTH / 2 - 50 , WINDOW_HEIGHT / 2 - 37))
 
-draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False, 'H')
-draw_ruler(screen, EXTERNAL_MARGIN + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT - CARD_RULER_HEIGHT, VUL_COLOR, 'H')
+draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False)
+draw_ruler(screen, EXTERNAL_MARGIN + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT - CARD_RULER_HEIGHT, VUL_COLOR)
 
-draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, True, 'H')
-draw_ruler(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH, EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, VUL_COLOR, 'H')
+draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False)
+draw_ruler(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH, EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR)
 
-draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True, 'H')
-draw_ruler(screen, EXTERNAL_MARGIN + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_RULER_HEIGHT, NOT_VUL_COLOR, 'H')
+draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True)
+draw_ruler(screen, EXTERNAL_MARGIN + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_RULER_HEIGHT, VUL_COLOR)
 
-draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, True, 'H')
-draw_ruler(screen, EXTERNAL_MARGIN , EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR, 'H')
+draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False)
+draw_ruler(screen, EXTERNAL_MARGIN , EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR)
 
 while True:
 	for event in pygame.event.get():
@@ -301,18 +293,28 @@ while True:
 				SouthPlayerHand.reorder()
 				WestPlayerHand.reorder()
 
-				draw_hand(screen, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE + INTERNAL_MARGIN, EXTERNAL_MARGIN, NorthPlayerHand, False, 'H')
-				draw_ruler(screen, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EXTERNAL_MARGIN + CARD_HEIGHT - CARD_RULER_HEIGHT, VUL_COLOR, 'H')
-				draw_hand(screen, 600, 200, EastPlayerHand, True, 'V')
-				draw_hand(screen, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE + INTERNAL_MARGIN, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True, 'H')
-				draw_ruler(screen, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_RULER_HEIGHT, NOT_VUL_COLOR, 'H')
-				draw_hand(screen, 50, 200, WestPlayerHand, True, 'V')
+				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False)
+				draw_ruler(screen, EXTERNAL_MARGIN + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT - CARD_RULER_HEIGHT, VUL_COLOR)
+				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False)
+				draw_ruler(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH, EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True)
+				draw_ruler(screen, EXTERNAL_MARGIN + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_RULER_HEIGHT, VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False)
+				draw_ruler(screen, EXTERNAL_MARGIN , EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR)
 			elif keys[K_h]:
-				draw_hand(screen, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE + INTERNAL_MARGIN, EXTERNAL_MARGIN, NorthPlayerHand, False, 'H')
-				draw_ruler(screen, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EXTERNAL_MARGIN + CARD_HEIGHT - CARD_RULER_HEIGHT, VUL_COLOR, 'H')
+				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False)
+				draw_ruler(screen, EXTERNAL_MARGIN + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT - CARD_RULER_HEIGHT, VUL_COLOR)
+				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False)
+				draw_ruler(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH, EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False)
+				draw_ruler(screen, EXTERNAL_MARGIN , EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR)
 			elif keys[K_s]:
-				draw_hand(screen, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE + INTERNAL_MARGIN, EXTERNAL_MARGIN, NorthPlayerHand, True, 'H')
-				draw_ruler(screen, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EXTERNAL_MARGIN + CARD_HEIGHT - CARD_RULER_HEIGHT, VUL_COLOR, 'H')
+				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, True)
+				draw_ruler(screen, EXTERNAL_MARGIN + 2 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT - CARD_RULER_HEIGHT, VUL_COLOR)
+				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, True)
+				draw_ruler(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH, EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, True)
+				draw_ruler(screen, EXTERNAL_MARGIN , EXTERNAL_MARGIN + 2 * CARD_HEIGHT + DELTA_SPACE - CARD_RULER_HEIGHT, NOT_VUL_COLOR)
 		elif (event.type == KEYUP):
 			pass 	# Key released ...
 		elif (event.type == MOUSEBUTTONDOWN):
