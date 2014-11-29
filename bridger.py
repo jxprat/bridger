@@ -18,6 +18,7 @@ INTERNAL_MARGIN = 15
 EXTERNAL_MARGIN = 20
 
 DELTA_SPACE = 120
+DELTA_SELECT = 5 			# Card lift up this pixels ...
 
 CARD_RULER_WIDTH = VISUAL_CARD_WIDTH * 12 + CARD_WIDTH + INTERNAL_MARGIN * 2
 CARD_RULER_HEIGHT = 40
@@ -227,19 +228,36 @@ def draw_hand(scr, posX, posY, hand, visible, color):
 		delta += VISUAL_CARD_WIDTH
 	pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
 	mytext = FontGame.render("North", True, (0, 0, 0))
-	screen.blit(mytext,(posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
+	scr.blit(mytext,(posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
 	pygame.display.flip()
 
-def GetCardFromMouse(posX, player_hand):
+def GetIndexCardFromMouse(posX, player_hand):
 	if (len(player_hand) == 1):
 		ndx = 0
 	else:
 		ndx = (posX - EXTERNAL_MARGIN - CARD_RULER_WIDTH - INTERNAL_MARGIN) / VISUAL_CARD_WIDTH
 		if(ndx > 12):
 			ndx = 12
-	print "Index: ", ndx
-	return player_hand[ndx]
+	return ndx
 
+def CardUp(scr, ndx, player_hand):
+	posX = EXTERNAL_MARGIN + CARD_RULER_WIDTH + INTERNAL_MARGIN + ndx * VISUAL_CARD_WIDTH
+	posY = WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT
+	delta = 0
+	for card in player_hand:
+		img = load_image(card2filename(card))
+		if(delta == ndx):
+			scr.blit(img,(posX + delta * VISUAL_CARD_WIDTH, posY + DELTA_SELECT))
+		else:
+			scr.blit(img,(posX + delta * VISUAL_CARD_WIDTH, posY))
+		delta += 1
+	pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+	mytext = FontGame.render("North", True, (0, 0, 0))
+	scr.blit(mytext,(posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
+	pygame.display.flip()
+
+def CardDown(scr, ndx, player_hand):
+	pass
 # ---------------------------------------------------------------------
 
 # Main program ...
@@ -353,4 +371,5 @@ while True:
 	initX = EXTERNAL_MARGIN + CARD_RULER_WIDTH + INTERNAL_MARGIN
 	finalX = initX + (len(SouthPlayerHand) - 1) * VISUAL_CARD_WIDTH + CARD_WIDTH
 	if ((mouse_pos[1] > initY) and (mouse_pos[1] < finalY) and (mouse_pos[0] > initX) and (mouse_pos[0] < finalX)):
-		print GetCardFromMouse(mouse_pos[0], SouthPlayerHand)
+		ndx = GetIndexCardFromMouse(mouse_pos[0], SouthPlayerHand)
+		CardUp(screen, ndx, SouthPlayerHand)
