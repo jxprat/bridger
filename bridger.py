@@ -18,7 +18,7 @@ INTERNAL_MARGIN = 15
 EXTERNAL_MARGIN = 20
 
 DELTA_SPACE = 120
-DELTA_SELECT = 5 			# Card lift up this pixels ...
+DELTA_SELECT = 15 			# Card lift up this pixels ...
 
 CARD_RULER_WIDTH = VISUAL_CARD_WIDTH * 12 + CARD_WIDTH + INTERNAL_MARGIN * 2
 CARD_RULER_HEIGHT = 40
@@ -241,17 +241,18 @@ def GetIndexCardFromMouse(posX, player_hand):
 	return ndx
 
 def CardUp(scr, ndx, player_hand):
-	posX = EXTERNAL_MARGIN + CARD_RULER_WIDTH + INTERNAL_MARGIN + ndx * VISUAL_CARD_WIDTH
+	posX = EXTERNAL_MARGIN + CARD_RULER_WIDTH + INTERNAL_MARGIN
 	posY = WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT
+	scr.fill(BG_COLOR, (posX - INTERNAL_MARGIN, posY - DELTA_SELECT, CARD_RULER_WIDTH, CARD_HEIGHT))
 	delta = 0
 	for card in player_hand:
 		img = load_image(card2filename(card))
-		if(delta == ndx):
-			scr.blit(img,(posX + delta * VISUAL_CARD_WIDTH, posY + DELTA_SELECT))
+		if(delta == ndx and ndx != -1):
+			scr.blit(img,(posX + delta * VISUAL_CARD_WIDTH, posY - DELTA_SELECT))
 		else:
 			scr.blit(img,(posX + delta * VISUAL_CARD_WIDTH, posY))
 		delta += 1
-	pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+	pygame.draw.rect(scr, VUL_COLOR, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
 	mytext = FontGame.render("North", True, (0, 0, 0))
 	scr.blit(mytext,(posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
 	pygame.display.flip()
@@ -373,3 +374,5 @@ while True:
 	if ((mouse_pos[1] > initY) and (mouse_pos[1] < finalY) and (mouse_pos[0] > initX) and (mouse_pos[0] < finalX)):
 		ndx = GetIndexCardFromMouse(mouse_pos[0], SouthPlayerHand)
 		CardUp(screen, ndx, SouthPlayerHand)
+	else:
+		CardUp(screen, -1, SouthPlayerHand)
