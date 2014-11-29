@@ -135,32 +135,38 @@ class Hand:
 # Class BridgePlayer
 # ---------------------------------------------------------------------
 class BridgePlayer:
-	def __init__(self, Pos, isVul, Hand, isDealer):
-		self.Position = Pos
-		self.MyHand = Hand()
-		self.Vulnerability = isVul
-		self.Dealer = isDealer
+	def __init__(self, Pos, Hand=None, isVul=None, isDealer=None):
+		self.PlayerPosition = Pos 		# N, E, S or W
+		if(Hand != None):
+			self.PlayerHand = Hand()
+		if(isVul != None):
+			self.PlayerVulnerability = isVul
+		if(isDealer != None):
+			self.isPlayerDealer = isDealer
 
 	def set_Position(self, Pos):
-		self.Position = Pos
+		self.PlayerPosition = Pos
 
 	def get_Position(self):
-		return self.Position
+		return self.PlayerPosition
 
 	def set_Vulnerability(self, v):
-		self.Vulnerability = v
+		self.PlayerVulnerability = v
 
 	def isVulnerable(self):
-		return self.Vulnerability
+		return self.PlayerVulnerability
 
 	def set_Hand(self, newHand):
-		self.MyHand = newHand
+		self.PlayerHand = newHand
+
+	def get_Hand(self):
+		return self.PlayerHand
 
 	def set_Dealer(self, d):
-		self.Dealer = d
+		self.isPlayerDealer = d
 
 	def isDealer(self):
-		return self.isDealer
+		return self.isPlayerDealer
 # ---------------------------------------------------------------------
 
 # Class BridgeTable
@@ -169,9 +175,10 @@ class BridgeTable:
 	def __init__(self):
 		self.table_deck = Deck()
 		self.table_deck.shuffle()
-		#self.player_N = BridgePlayer('N')
-		print "Bridge Table:"
-		print self.table_deck
+		self.player_N = BridgePlayer('N')
+		self.player_E = BridgePlayer('E')
+		self.player_S = BridgePlayer('S')
+		self.player_W = BridgePlayer('W')
 
 # ---------------------------------------------------------------------
 
