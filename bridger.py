@@ -112,6 +112,20 @@ class Hand:
         else:
             return False
 
+    def MaxOfSuit(self, suit):
+    	max_card = False
+    	print self.hand_cards
+    	
+		#    		print len(self.hand_cards)
+		#    		if (suit == card.get_suit()):
+		#    			print "--> ", card.get_suit()
+		#    			if (max_card == False):
+		#    				max_card = card
+		#   				elif (card > max_card):
+		#   					max_card = card
+
+    	return max_card
+
     def reorder(self):
         ordered_hand = Hand()
         for i in range(0,13):
@@ -297,6 +311,12 @@ print "New North Hand: ", NorthPlayerHand
 print "New East Hand: ", EastPlayerHand
 print "New South Hand: ", SouthPlayerHand
 print "New West Hand: ", WestPlayerHand
+
+print "Top of Suits ..."
+print SouthPlayerHand.MaxOfSuit("S")
+print SouthPlayerHand.MaxOfSuit("H")
+print SouthPlayerHand.MaxOfSuit("D")
+print SouthPlayerHand.MaxOfSuit("C")
 # ---------------------------------------------------------------------
 
 # Graphic part ...
