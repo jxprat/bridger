@@ -130,6 +130,10 @@ class Hand:
 
     def __getitem__(self, ndx):
         return self.hand_cards[ndx]
+
+    def __len__(self):
+    	return len(self.hand_cards)
+
 # ---------------------------------------------------------------------
 
 # Class BridgePlayer
@@ -222,7 +226,19 @@ def draw_hand(scr, posX, posY, hand, visible, color):
 		scr.blit(img,(posX + delta, posY))
 		delta += VISUAL_CARD_WIDTH
 	pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+	mytext = FontGame.render("North", True, (0, 0, 0))
+	screen.blit(mytext,(posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
 	pygame.display.flip()
+
+def GetCardFromMouse(posX, player_hand):
+	if (len(player_hand) == 1):
+		ndx = 0
+	else:
+		ndx = (posX - EXTERNAL_MARGIN - CARD_RULER_WIDTH - INTERNAL_MARGIN) / VISUAL_CARD_WIDTH
+		if(ndx > 12):
+			ndx = 12
+	print "Index: ", ndx
+	return player_hand[ndx]
 
 # ---------------------------------------------------------------------
 
@@ -269,8 +285,10 @@ print "New West Hand: ", WestPlayerHand
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Bridger!")
 pygame.display.set_icon(pygame.image.load(LOGO_ICO))
+pygame.font.init()
 
 screen.fill(BG_COLOR)
+FontGame = pygame.font.SysFont("None", 36, True)	# Default sysfont, size=12 and bold
 ## logo_image = pygame.transform.scale(load_image("images/Bridger Logo.png"), (100, 75))
 ## screen.blit(logo_image, (WINDOW_WIDTH / 2 - 50 , WINDOW_HEIGHT / 2 - 37))
 
@@ -284,7 +302,7 @@ while True:
 		if (event.type == QUIT):
 			sys.exit(0)
 		elif (event.type == KEYDOWN):			# Key pressed ...
-			keys = pygame.key.get_pressed()		# Wich key?
+			keys = pygame.key.get_pressed()		# Witch key?
 			if keys[K_n]:						# Test key in keys[]
 				deck = Deck()
 				deck.shuffle()
@@ -316,8 +334,9 @@ while True:
 				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, True, VUL_COLOR)
 				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, True, NOT_VUL_COLOR)
 				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, True, NOT_VUL_COLOR)
-		elif (event.type == KEYUP):
-			pass 	# Key released ...
+		elif (event.type == KEYUP):				# Key released ...
+			if event.key == pygame.K_q:
+				pass # sys.exit(0)
 		elif (event.type == MOUSEBUTTONDOWN):
 			print "Mouse button pressed ..."
 			print pygame.mouse.get_pressed()
@@ -328,6 +347,10 @@ while True:
 			print pygame.mouse.get_pos()
 		else:
 			pass
-    	#pygame.display.update()     # Podem passar una porcio de la pantalla per actualitzar aquest recuadre,
-    	#pygame.display.flip()        # sino funciona igual que aquesta altra funcio
-
+	mouse_pos = pygame.mouse.get_pos()
+	initY = WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT
+	finalY = WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_RULER_HEIGHT
+	initX = EXTERNAL_MARGIN + CARD_RULER_WIDTH + INTERNAL_MARGIN
+	finalX = initX + (len(SouthPlayerHand) - 1) * VISUAL_CARD_WIDTH + CARD_WIDTH
+	if ((mouse_pos[1] > initY) and (mouse_pos[1] < finalY) and (mouse_pos[0] > initX) and (mouse_pos[0] < finalX)):
+		print GetCardFromMouse(mouse_pos[0], SouthPlayerHand)
