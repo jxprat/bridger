@@ -111,13 +111,20 @@ class Hand:
     			max_card = card
     	return max_card
 
-    def reorder(self):
-        ordered_hand = Hand()
-        for i in range(0,len(self.hand_cards)):
-            card = self.max()
-            self.remove_card(card)
-            ordered_hand.add_card(card)
-        self.hand_cards = ordered_hand.hand_cards
+    def Reorder(self, suit1, suit2, suit3, suit4):
+    	ordered_hand = Hand()
+    	for i in range(0,len(self.hand_cards)):
+    		if(self.HaveSuit(suit1)):
+    			card = self.MaxOfSuit(suit1)
+    		elif(self.HaveSuit(suit2)):
+    			card = self.MaxOfSuit(suit2)
+    		elif(self.HaveSuit(suit3)):
+    			card = self.MaxOfSuit(suit3)
+    		elif(self.HaveSuit(suit4)):
+    			card = self.MaxOfSuit(suit4)
+    		self.remove_card(card)
+    		ordered_hand.add_card(card)
+    	self.hand_cards = ordered_hand
 
     def HaveSuit(self, suit):
     	for card in self.hand_cards:
@@ -318,10 +325,10 @@ print "South Hand: ", SouthPlayerHand
 print "West Hand: ", WestPlayerHand
 
 print "Reordering al hands ... "
-NorthPlayerHand.reorder()
-EastPlayerHand.reorder()
-SouthPlayerHand.reorder()
-WestPlayerHand.reorder()
+NorthPlayerHand.Reorder("S", "H", "C", "D")
+EastPlayerHand.Reorder("S", "H", "C", "D")
+SouthPlayerHand.Reorder("S", "H", "C", "D")
+WestPlayerHand.Reorder("S", "H", "C", "D")
 
 print "New North Hand: ", NorthPlayerHand
 print "New East Hand: ", EastPlayerHand
@@ -372,10 +379,10 @@ while True:
 				    SouthPlayerHand.add_card(deck.deal_card())
 				    WestPlayerHand.add_card(deck.deal_card())
 
-				NorthPlayerHand.reorder()
-				EastPlayerHand.reorder()
-				SouthPlayerHand.reorder()
-				WestPlayerHand.reorder()
+				NorthPlayerHand.Reorder("S", "H", "C", "D")
+				EastPlayerHand.Reorder("S", "H", "C", "D")
+				SouthPlayerHand.Reorder("S", "H", "C", "D")
+				WestPlayerHand.Reorder("S", "H", "C", "D")
 
 				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False, VUL_COLOR)
 				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
