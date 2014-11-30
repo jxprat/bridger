@@ -120,7 +120,15 @@ class Hand:
         self.hand_cards = ordered_hand.hand_cards
 
     def MaxOfSuit(self, suit):
-    	return ("ja, ja, ja, ...")
+    	max_card = False
+    	for card in self.hand_cards:
+    		if(card.get_suit() == suit):
+    			if(max_card == False):
+    				max_card = card
+    			else:
+    				if(card > max_card):
+    					max_card = card
+    	return max_card
 
     def __str__(self):
         hand_str = ""
