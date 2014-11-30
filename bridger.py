@@ -119,6 +119,12 @@ class Hand:
             ordered_hand.add_card(card)
         self.hand_cards = ordered_hand.hand_cards
 
+    def HaveSuit(self, suit):
+    	for card in self.hand_cards:
+    		if(card.get_suit() == suit):
+    			return True
+    	return False
+
     def MaxOfSuit(self, suit):
     	max_card = False
     	for card in self.hand_cards:
@@ -140,6 +146,9 @@ class Hand:
     				if(card < min_card):
     					min_card = card
     	return min_card
+
+    def KillCard(self, card2kill):
+    	sel_card = False
 
     def __str__(self):
         hand_str = ""
@@ -372,7 +381,7 @@ while True:
 				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
 				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True, VUL_COLOR)
 				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False, NOT_VUL_COLOR)
-				
+
 				print "New North Hand: ", NorthPlayerHand
 				print "New East Hand: ", EastPlayerHand
 				print "New South Hand: ", SouthPlayerHand
@@ -383,6 +392,11 @@ while True:
 				print "Max of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
 				print "Min of Diamonds: ", SouthPlayerHand.MinOfSuit("D")
 				print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
+
+				print "Have Spades? ", SouthPlayerHand.HaveSuit("S")
+				print "Have Hearts? ", SouthPlayerHand.HaveSuit("H")
+				print "Have Diamonds? ", SouthPlayerHand.HaveSuit("D")
+				print "Have Clubs? ", SouthPlayerHand.HaveSuit("C")
 
 			elif keys[K_h]:
 				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False, VUL_COLOR)
