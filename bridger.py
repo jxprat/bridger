@@ -9,8 +9,10 @@ from pygame.locals import *
 
 # Constants ...
 # ---------------------------------------------------------------------
-CARD_WIDTH = 79             # Width of the card
-CARD_HEIGHT = 123           # Height of th e card
+CARD_WIDTH = 79             # Width of the cards
+CARD_HEIGHT = 123           # Height of the cards
+BID_CARD_WIDTH = 50			# Width of the bidding cards
+BID_CARD_HEIGHT = 50		# Height of the bidding cards
 
 VISUAL_CARD_WIDTH = 15      # Width shown when cards are agrupped
 
@@ -102,7 +104,7 @@ class Hand:
             # Error ...
             pass
 
-    def max(self):
+    def max(self):			# Return the maximum card according to stablished ranking suits
     	max_card = False
     	for card in self.hand_cards:
     		if (max_card == False):
@@ -294,8 +296,19 @@ def CardUp(scr, ndx, player_hand):
 	scr.blit(mytext,(posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
 	pygame.display.flip()
 
-def CardDown(scr, ndx, player_hand):
-	pass
+def DrawBiddingWindow(scr, posX, posY):
+	deltaY = 0
+	for i in range (1,8):
+		deltaX = 0
+		for j in ("c", "d", "h", "s", "nt"):
+			filename = "0" + str(i) + j + ".gif"
+			img = load_image("images/bidding/" + filename)
+			scr.blit(img,(posX + deltaX * BID_CARD_WIDTH, posY + deltaY * 15))
+			deltaX += 1
+		deltaY += 1
+	pygame.display.flip()
+
+
 # ---------------------------------------------------------------------
 
 # Main program ...
@@ -424,8 +437,10 @@ while True:
 			print "Mouse button released ..."
 			print pygame.mouse.get_pressed()
 			print pygame.mouse.get_pos()
-		else:
+		else:		# Other events ...
 			pass
+
+	# Contol where the mouse is to lift card up/down
 	mouse_pos = pygame.mouse.get_pos()
 	initY = WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT
 	finalY = WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_RULER_HEIGHT
@@ -436,3 +451,6 @@ while True:
 		CardUp(screen, ndx, SouthPlayerHand)
 	else:
 		CardUp(screen, -1, SouthPlayerHand)
+
+	# Draw the Bidding Control Window ...
+	DrawBiddingWindow(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH + INTERNAL_MARGIN, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT)
