@@ -308,6 +308,8 @@ def DrawBiddingWindow(scr, posX, posY):
 		deltaY += 1
 	pygame.display.flip()
 
+def DrawGeneralInfoWindow(scr):
+	pygame.draw.rect(scr, (180, 180, 180), [EXTERNAL_MARGIN, EXTERNAL_MARGIN, CARD_RULER_WIDTH, CARD_HEIGHT], 1)
 
 # ---------------------------------------------------------------------
 
@@ -454,3 +456,7 @@ while True:
 
 	# Draw the Bidding Control Window ...
 	DrawBiddingWindow(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH + INTERNAL_MARGIN, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT)
+
+	# Draw the General Info Window ...
+	DrawGeneralInfoWindow(screen)
+	
