@@ -130,6 +130,17 @@ class Hand:
     					max_card = card
     	return max_card
 
+    def MinOfSuit(self,suit):
+    	min_card = False
+    	for card in self.hand_cards:
+    		if(card.get_suit() == suit):
+    			if(min_card == False):
+    				min_card = card
+    			else:
+    				if(card < min_card):
+    					min_card = card
+    	return min_card
+
     def __str__(self):
         hand_str = ""
         for card in self.hand_cards:
@@ -308,11 +319,11 @@ print "New East Hand: ", EastPlayerHand
 print "New South Hand: ", SouthPlayerHand
 print "New West Hand: ", WestPlayerHand
 
-print "Top of Suits ..."
-print "Top of Spades: ", SouthPlayerHand.MaxOfSuit("S")
-print "Top of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
-#print SouthPlayerHand.MaxOfSuit("D")
-#print SouthPlayerHand.MaxOfSuit("C")
+print "Max/Min of Suits ..."
+print "Max of Spades: ", SouthPlayerHand.MaxOfSuit("S")
+print "Max of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
+print "Min of Diamonds: ", SouthPlayerHand.MinOfSuit("D")
+print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
 # ---------------------------------------------------------------------
 
 # Graphic part ...
@@ -361,6 +372,18 @@ while True:
 				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
 				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True, VUL_COLOR)
 				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False, NOT_VUL_COLOR)
+				
+				print "New North Hand: ", NorthPlayerHand
+				print "New East Hand: ", EastPlayerHand
+				print "New South Hand: ", SouthPlayerHand
+				print "New West Hand: ", WestPlayerHand
+
+				print "Max/Min of Suits ..."
+				print "Max of Spades: ", SouthPlayerHand.MaxOfSuit("S")
+				print "Max of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
+				print "Min of Diamonds: ", SouthPlayerHand.MinOfSuit("D")
+				print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
+
 			elif keys[K_h]:
 				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False, VUL_COLOR)
 				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
