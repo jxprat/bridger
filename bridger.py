@@ -11,8 +11,8 @@ from pygame.locals import *
 # ---------------------------------------------------------------------
 CARD_WIDTH = 79             # Width of the cards
 CARD_HEIGHT = 123           # Height of the cards
-BID_CARD_WIDTH = 50			# Width of the bidding cards
-BID_CARD_HEIGHT = 50		# Height of the bidding cards
+BID_CARD_WIDTH = 26			# Width of the bidding cards
+BID_CARD_HEIGHT = 36		# Height of the bidding cards
 
 VISUAL_CARD_WIDTH = 15      # Width shown when cards are agrupped
 
@@ -302,8 +302,8 @@ def DrawBiddingWindow(scr, posX, posY):
 		deltaX = 0
 		for j in ("c", "d", "h", "s", "nt"):
 			filename = "0" + str(i) + j + ".gif"
-			img = load_image("images/bidding/" + filename)
-			scr.blit(img,(posX + deltaX * BID_CARD_WIDTH, posY + deltaY * 15))
+			img = load_image("images/bidding/" + filename, False)
+			scr.blit(img,(posX + deltaX * BID_CARD_WIDTH, posY + deltaY * BID_CARD_HEIGHT))
 			deltaX += 1
 		deltaY += 1
 	pygame.display.flip()
