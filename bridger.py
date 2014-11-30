@@ -113,7 +113,7 @@ class Hand:
 
     def reorder(self):
         ordered_hand = Hand()
-        for i in range(0,13):
+        for i in range(0,len(self.hand_cards)):
             card = self.max()
             self.remove_card(card)
             ordered_hand.add_card(card)
