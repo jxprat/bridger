@@ -103,27 +103,12 @@ class Hand:
             pass
 
     def max(self):
-        if (len(self.hand_cards) > 0):
-            max_card = self.hand_cards[0]
-            for card in self.hand_cards:
-                if (card > max_card):
-                    max_card = card
-            return max_card
-        else:
-            return False
-
-    def MaxOfSuit(self, suit):
     	max_card = False
-    	print self.hand_cards
-    	
-		#    		print len(self.hand_cards)
-		#    		if (suit == card.get_suit()):
-		#    			print "--> ", card.get_suit()
-		#    			if (max_card == False):
-		#    				max_card = card
-		#   				elif (card > max_card):
-		#   					max_card = card
-
+    	for card in self.hand_cards:
+    		if (max_card == False):
+    			max_card = card
+    		if (card > max_card):
+    			max_card = card
     	return max_card
 
     def reorder(self):
@@ -133,6 +118,9 @@ class Hand:
             self.remove_card(card)
             ordered_hand.add_card(card)
         self.hand_cards = ordered_hand.hand_cards
+
+    def MaxOfSuit(self, suit):
+    	return ("ja, ja, ja, ...")
 
     def __str__(self):
         hand_str = ""
@@ -313,10 +301,10 @@ print "New South Hand: ", SouthPlayerHand
 print "New West Hand: ", WestPlayerHand
 
 print "Top of Suits ..."
-print SouthPlayerHand.MaxOfSuit("S")
-print SouthPlayerHand.MaxOfSuit("H")
-print SouthPlayerHand.MaxOfSuit("D")
-print SouthPlayerHand.MaxOfSuit("C")
+print "Top of Spades: ", SouthPlayerHand.MaxOfSuit("S")
+print "Top of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
+#print SouthPlayerHand.MaxOfSuit("D")
+#print SouthPlayerHand.MaxOfSuit("C")
 # ---------------------------------------------------------------------
 
 # Graphic part ...
