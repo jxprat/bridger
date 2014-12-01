@@ -39,7 +39,7 @@ LOGO_ICO = "images/bridger.png"
 SUITS = ('C', 'S', 'H', 'D')  # Clubs, Spades, Hearts, Daemonds
 RANK = ('A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K')
 VALUES = {'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'C': 0, 'D': 20, 'H': 40, 'S': 60}
-POSITION = ('N', 'E', 'S', 'W')
+CARDINAL_POINTS = ('N', 'E', 'S', 'W')
 
 # *********************************************************************
 # Class Card
@@ -233,7 +233,10 @@ class Bridge:
 	#	OUT 	None
 	# -----------------------------------------------------
 	def SetDealer(self, deal):
-		self.Dealer = deal
+		if(deal in CARDINAL_POINTS):
+			self.Dealer = deal
+		else:
+			self.Dealer = None
 
 	# -----------------------------------------------------
 	# NextPlayer
@@ -267,7 +270,11 @@ class Bridge:
 	#	OUT 	None
 	# -----------------------------------------------------
 	def DealCards(self):
-		pass
+		if(self.Dealer != None):
+			self.northP
+			for i in range(0,13):
+				pass
+
 # *********************************************************************
 # Functions ...
 # *********************************************************************
@@ -402,7 +409,7 @@ print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
 # *********************************************************************
 # Graphic part ...
 # *********************************************************************
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) #, pygame.RESIZABLE)
 pygame.display.set_caption("Bridger!")
 pygame.display.set_icon(pygame.image.load(LOGO_ICO))
 pygame.font.init()
