@@ -1,14 +1,15 @@
+# *********************************************************************
 # System imports ...
-# ---------------------------------------------------------------------
+# *********************************************************************
 import random
 import sys
 import time
 import pygame
 from pygame.locals import *
-# ---------------------------------------------------------------------
 
+# *********************************************************************
 # Constants ...
-# ---------------------------------------------------------------------
+# *********************************************************************
 CARD_WIDTH = 79             # Width of the cards
 CARD_HEIGHT = 123           # Height of the cards
 BID_CARD_WIDTH = 26			# Width of the bidding cards
@@ -40,8 +41,9 @@ RANK = ('A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K')
 VALUES = {'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'C': 0, 'D': 20, 'H': 40, 'S': 60}
 POSITION = ('N', 'E', 'S', 'W')
 
+# *********************************************************************
 # Class Card
-# ---------------------------------------------------------------------
+# *********************************************************************
 class Card:
     def __init__(self, suit, rank):
         self.suit = suit.upper()
@@ -61,10 +63,10 @@ class Card:
 
     def __str__(self):
         return self.suit + self.rank
-# ---------------------------------------------------------------------
 
+# *********************************************************************
 # Class Deck
-# ---------------------------------------------------------------------
+# *********************************************************************
 class Deck:
     def __init__(self):
         self.deck = []
@@ -86,10 +88,10 @@ class Deck:
 
     def __iter__(self):
         return iter(self.deck)
-# ---------------------------------------------------------------------
 
+# *********************************************************************
 # Class Hand
-# ---------------------------------------------------------------------
+# *********************************************************************
 class Hand:
     def __init__(self):
         self.hand_cards = []
@@ -174,19 +176,12 @@ class Hand:
     def __len__(self):
     	return len(self.hand_cards)
 
-# ---------------------------------------------------------------------
-
+# *********************************************************************
 # Class BridgePlayer
-# ---------------------------------------------------------------------
+# *********************************************************************
 class BridgePlayer:
-	def __init__(self, Pos, Hand=None, isVul=None, isDealer=None):
+	def __init__(self, Pos):
 		self.PlayerPosition = Pos 		# N, E, S or W
-		if(Hand != None):
-			self.PlayerHand = Hand()
-		if(isVul != None):
-			self.PlayerVulnerability = isVul
-		if(isDealer != None):
-			self.isPlayerDealer = isDealer
 
 	def set_Position(self, Pos):
 		self.PlayerPosition = Pos
@@ -211,23 +206,56 @@ class BridgePlayer:
 
 	def isDealer(self):
 		return self.isPlayerDealer
-# ---------------------------------------------------------------------
 
-# Class BridgeTable
-# ---------------------------------------------------------------------
-class BridgeTable:
+# *********************************************************************
+# Class Bridge
+# *********************************************************************
+class Bridge:
 	def __init__(self):
-		self.table_deck = Deck()
-		self.table_deck.shuffle()
-		self.player_N = BridgePlayer('N')
-		self.player_E = BridgePlayer('E')
-		self.player_S = BridgePlayer('S')
-		self.player_W = BridgePlayer('W')
+		self.bridgeDeck = Deck()
+		self.bridgeDeck.shuffle()
+		self.Dealer = None					# N, E, S, W
+		self.Vulnerability = [] 			# N, E, S, W
+		self.Turn = None					# N -> E -> S -> W -> N -> ...
+		self.northP = BridgePlayer('N')
+		self.eastP = BridgePlayer('E')
+		self.SouthP = BridgePlayer('S')
+		self.westP = BridgePlayer('W')
 
-# ---------------------------------------------------------------------
+	def NewGame(self, deal, vul):
+		if(len(self.bridgeDeck != 52)):
+			self.bridgeDeck = Deck()
+		self.bridgeDeck.shuffle()
 
+	# -----------------------------------------------------
+	# NextPlayer
+	# 	IN 		None
+	#	OUT 	char (N, E, S, W, None) Next Player Turn
+	# -----------------------------------------------------
+	def NextPlayer(self):
+		if(self.Turn == 'N'):
+			self.Turn = 'E'
+		elif(self.Turn == 'E'):
+			self.Turn = 'S'
+		elif(self.Turn == 'S'):
+			self.Turn == 'W'
+		elif(self.Turn == 'W'):
+			self.Turn = 'N'
+		else:
+			self.Turn = None
+		return self.Turn
+
+	# -----------------------------------------------------
+	# GetTurn
+	# 	IN 		None
+	#	OUT 	char (N, E, S, W, None) Next Player Turn
+	# -----------------------------------------------------
+	def GetTurn(self):
+		return self.Turn
+
+# *********************************************************************
 # Functions ...
-# ---------------------------------------------------------------------
+# *********************************************************************
 def load_image(filename, transparent=False):
     try: image = pygame.image.load(filename)
     except pygame.error, message:
@@ -312,17 +340,16 @@ def DrawBiddingWindow(scr, posX, posY):
 def DrawGeneralInfoWindow(scr):
 	pygame.draw.rect(scr, (180, 180, 180), [EXTERNAL_MARGIN, EXTERNAL_MARGIN, CARD_RULER_WIDTH, CARD_HEIGHT], 1)
 
-# ---------------------------------------------------------------------
-
+# *********************************************************************
 # Main program ...
-# ---------------------------------------------------------------------
+# *********************************************************************
 print 'Hello Bridger!'
 print 'Window is ', WINDOW_WIDTH, WINDOW_HEIGHT
 deck = Deck()
 deck.shuffle()
 print deck
 
-br_table = BridgeTable()
+Game = Bridge()
 
 NorthPlayerHand = Hand()
 EastPlayerHand = Hand()
@@ -356,10 +383,10 @@ print "Max of Spades: ", SouthPlayerHand.MaxOfSuit("S")
 print "Max of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
 print "Min of Diamonds: ", SouthPlayerHand.MinOfSuit("D")
 print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
-# ---------------------------------------------------------------------
 
+# *********************************************************************
 # Graphic part ...
-# ---------------------------------------------------------------------
+# *********************************************************************
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Bridger!")
 pygame.display.set_icon(pygame.image.load(LOGO_ICO))
