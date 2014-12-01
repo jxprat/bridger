@@ -215,7 +215,7 @@ class Bridge:
 		self.bridgeDeck = Deck()
 		self.bridgeDeck.shuffle()
 		self.Dealer = None					# N, E, S, W
-		self.Vulnerability = [] 			# N, E, S, W
+		self.Vulnerability = [] 			# N, E, S, W Also could be an empty list, meaning no vulnerability
 		self.Turn = None					# N -> E -> S -> W -> N -> ...
 		self.northP = BridgePlayer('N')
 		self.eastP = BridgePlayer('E')
@@ -226,6 +226,14 @@ class Bridge:
 		if(len(self.bridgeDeck != 52)):
 			self.bridgeDeck = Deck()
 		self.bridgeDeck.shuffle()
+
+	# -----------------------------------------------------
+	# SetDealer
+	# 	IN 		None
+	#	OUT 	None
+	# -----------------------------------------------------
+	def SetDealer(self, deal):
+		self.Dealer = deal
 
 	# -----------------------------------------------------
 	# NextPlayer
@@ -253,6 +261,13 @@ class Bridge:
 	def GetTurn(self):
 		return self.Turn
 
+	# -----------------------------------------------------
+	# DealCards
+	# 	IN 		None
+	#	OUT 	None
+	# -----------------------------------------------------
+	def DealCards(self):
+		pass
 # *********************************************************************
 # Functions ...
 # *********************************************************************
@@ -487,4 +502,3 @@ while True:
 
 	# Draw the General Info Window ...
 	DrawGeneralInfoWindow(screen)
-	
