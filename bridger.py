@@ -301,8 +301,8 @@ def DrawBiddingWindow(scr, posX, posY):
 	for i in range (1,8):
 		deltaX = 0
 		for j in ("c", "d", "h", "s", "nt"):
-			filename = "0" + str(i) + j + ".gif"
-                        #filename = "02c.jpg"
+			#filename = "0" + str(i) + j + ".gif"
+                        filename = "02c.png"
 			img = load_image("images/bidding/" + filename, False)
 			scr.blit(img,(posX + deltaX * BID_CARD_WIDTH, posY + deltaY * BID_CARD_HEIGHT))
 			deltaX += 1
