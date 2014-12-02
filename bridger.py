@@ -10,18 +10,18 @@ from pygame.locals import *
 # *********************************************************************
 # Constants ...
 # *********************************************************************
-CARD_WIDTH = 79             # Width of the cards
-CARD_HEIGHT = 123           # Height of the cards
-BID_CARD_WIDTH = 26			# Width of the bidding cards
-BID_CARD_HEIGHT = 36		# Height of the bidding cards
+CARD_WIDTH = 79  # Width of the cards
+CARD_HEIGHT = 123  # Height of the cards
+BID_CARD_WIDTH = 26  # Width of the bidding cards
+BID_CARD_HEIGHT = 36  # Height of the bidding cards
 
-VISUAL_CARD_WIDTH = 15      # Width shown when cards are agrupped
+VISUAL_CARD_WIDTH = 15  # Width shown when cards are agrupped
 
 INTERNAL_MARGIN = 15
 EXTERNAL_MARGIN = 20
 
 DELTA_SPACE = 120
-DELTA_SELECT = 15 			# Card lift up this pixels ...
+DELTA_SELECT = 15  # Card lift up this pixels ...
 
 CARD_RULER_WIDTH = VISUAL_CARD_WIDTH * 12 + CARD_WIDTH + INTERNAL_MARGIN * 2
 CARD_RULER_HEIGHT = 40
@@ -29,9 +29,9 @@ CARD_RULER_HEIGHT = 40
 WINDOW_WIDTH = 2 * EXTERNAL_MARGIN + 6 * INTERNAL_MARGIN + 3 * (12 * VISUAL_CARD_WIDTH + CARD_WIDTH)
 WINDOW_HEIGHT = 2 * EXTERNAL_MARGIN + 3 * CARD_HEIGHT + 2 * DELTA_SPACE
 
-BG_COLOR = (21, 77, 0)			# Background color of the table
-VUL_COLOR = (203, 0, 0)			# Color when vulnerable
-NOT_VUL_COLOR = (203, 203, 203)		# Color when not vulnerable
+BG_COLOR = (21, 77, 0)  # Background color of the table
+VUL_COLOR = (203, 0, 0)  # Color when vulnerable
+NOT_VUL_COLOR = (203, 203, 203)  # Color when not vulnerable
 OTHER_BG = (153, 204, 204)
 
 LOGO_ICO = "images/bridger.png"
@@ -49,20 +49,21 @@ class Card:
         self.suit = suit.upper()
         self.rank = rank.upper()
 
-    def get_suit(self):
+    def GetSuit(self):
         return self.suit
 
-    def get_rank(self):
+    def GetRank(self):
         return self.rank
 
-    def __gt__(self,other):
+    def __gt__(self, other):
         if (self.suit == other.suit):
-            return VALUES [self.rank] > VALUES[other.rank]
+            return VALUES[self.rank] > VALUES[other.rank]
         else:
             return self.suit > other.suit
 
     def __str__(self):
         return self.suit + self.rank
+
 
 # *********************************************************************
 # Class Deck
@@ -74,7 +75,7 @@ class Deck:
             for rank in RANK:
                 self.deck.append(Card(suit, rank))
 
-    def shuffle(self):
+    def Shuffle(self):
         random.shuffle(self.deck)
 
     def deal_card(self):
@@ -89,6 +90,7 @@ class Deck:
     def __iter__(self):
         return iter(self.deck)
 
+
 # *********************************************************************
 # Class Hand
 # *********************************************************************
@@ -100,82 +102,79 @@ class Hand:
         self.Diamonds = []
         self.Clubs = []
 
-    def add_card(self, card):
-        suit = card.get_suit()
-        if(suit in SUITS):
-        	self.HandCards.append(card)
-	        if(suit == 'S'):
-	        	self.Spades.append(card)
-	        elif(suit == 'H'):
-	        	self.Hearts.append(card)
-	        elif(suit == 'D'):
-	        	self.Diamonds.append(card)
-	        else:
-	        	self.Clubs.append(card)
-	    else:
-	    	return False
-
-    def remove_card(self, card):
-        if (card in self.HandCards):
-            self.HandCards.remove(card)
+    def AddCard(self, card):
+        suit = card.GetSuit()
+        self.HandCards.append(card)
+        if (suit == 'S'):
+            self.Spades.append(card)
+        elif (suit == 'H'):
+            self.Hearts.append(card)
+        elif (suit == 'D'):
+            self.Diamonds.append(card)
         else:
-            # Error ...
-            pass
+            self.Clubs.append(card)
 
-    def max(self):			# Return the maximum card according to stablished ranking suits
-    	max_card = False
-    	for card in self.HandCards:
-    		if (max_card == False):
-    			max_card = card
-    		if (card > max_card):
-    			max_card = card
-    	return max_card
+    def RemoveCard(self, card):
+        suit = card.GetSuit()
+        self.HandCards.remove(card)
+        if (suit == 'S'):
+            self.Spades.remove(card)
+        elif (suit == 'H'):
+            self.Hearts.remove(card)
+        elif (suit == 'D'):
+            self.Diamonds.remove(card)
+        else:
+            self.Clubs.remove(card)
 
     def Reorder(self, suit1, suit2, suit3, suit4):
-    	OrderedHand = Hand()
-    	for i in range(0,len(self.HandCards)):
-    		if(self.HaveSuit(suit1)):
-    			card = self.MaxOfSuit(suit1)
-    		elif(self.HaveSuit(suit2)):
-    			card = self.MaxOfSuit(suit2)
-    		elif(self.HaveSuit(suit3)):
-    			card = self.MaxOfSuit(suit3)
-    		elif(self.HaveSuit(suit4)):
-    			card = self.MaxOfSuit(suit4)
-    		self.remove_card(card)
-    		OrderedHand.add_card(card)
-    	self.HandCards = OrderedHand
+        OrderedHand = Hand()
+        for i in range(0, len(self.HandCards)):
+            if (self.HaveSuit(suit1)):
+                card = self.MaxOfSuit(suit1)
+            elif (self.HaveSuit(suit2)):
+                card = self.MaxOfSuit(suit2)
+            elif (self.HaveSuit(suit3)):
+                card = self.MaxOfSuit(suit3)
+            elif (self.HaveSuit(suit4)):
+                card = self.MaxOfSuit(suit4)
+            self.RemoveCard(card)
+            OrderedHand.AddCard(card)
+        self.HandCards = OrderedHand
 
     def HaveSuit(self, suit):
-    	for card in self.HandCards:
-    		if(card.get_suit() == suit):
-    			return True
-    	return False
+        if (suit == 'S'):
+            return (len(self.Spades) > 0)
+        elif (suit == 'H'):
+            return (len(self.Hearts) > 0)
+        elif (suit == 'D'):
+            return (len(self.Diamonds) > 0)
+        else:
+            return (len(self.Clubs) > 0)
 
     def MaxOfSuit(self, suit):
-    	max_card = False
-    	for card in self.HandCards:
-    		if(card.get_suit() == suit):
-    			if(max_card == False):
-    				max_card = card
-    			else:
-    				if(card > max_card):
-    					max_card = card
-    	return max_card
+        max_card = False
+        for card in self.HandCards:
+            if (card.GetSuit() == suit):
+                if (max_card == False):
+                    max_card = card
+                else:
+                    if (card > max_card):
+                        max_card = card
+        return max_card
 
-    def MinOfSuit(self,suit):
-    	min_card = False
-    	for card in self.HandCards:
-    		if(card.get_suit() == suit):
-    			if(min_card == False):
-    				min_card = card
-    			else:
-    				if(card < min_card):
-    					min_card = card
-    	return min_card
+    def MinOfSuit(self, suit):
+        min_card = False
+        for card in self.HandCards:
+            if (card.GetSuit() == suit):
+                if (min_card == False):
+                    min_card = card
+                else:
+                    if (card < min_card):
+                        min_card = card
+        return min_card
 
     def KillCard(self, card2kill):
-    	sel_card = False
+        sel_card = False
 
     def __str__(self):
         hand_str = ""
@@ -190,14 +189,15 @@ class Hand:
         return self.HandCards[ndx]
 
     def __len__(self):
-    	return len(self.HandCards)
+        return len(self.HandCards)
+
 
 # *********************************************************************
 # Class BridgePlayer
 # *********************************************************************
 class BridgePlayer:
 	def __init__(self, Pos):
-		self.PlayerPosition = Pos 		# N, E, S or W
+		self.PlayerPosition = Pos  # N, E, S or W
 
 	def set_Position(self, Pos):
 		self.PlayerPosition = Pos
@@ -223,33 +223,34 @@ class BridgePlayer:
 	def isDealer(self):
 		return self.isPlayerDealer
 
+
 # *********************************************************************
 # Class Bridge
 # *********************************************************************
 class Bridge:
 	def __init__(self):
 		self.bridgeDeck = Deck()
-		self.bridgeDeck.shuffle()
-		self.Dealer = None					# N, E, S, W
-		self.Vulnerability = [] 			# N, E, S, W Also could be an empty list, meaning no vulnerability
-		self.Turn = None					# N -> E -> S -> W -> N -> ...
+		self.bridgeDeck.Shuffle()
+		self.Dealer = None  # N, E, S, W
+		self.Vulnerability = []  # N, E, S, W Also could be an empty list, meaning no vulnerability
+		self.Turn = None  # N -> E -> S -> W -> N -> ...
 		self.northP = BridgePlayer('N')
 		self.eastP = BridgePlayer('E')
 		self.SouthP = BridgePlayer('S')
 		self.westP = BridgePlayer('W')
 
 	def NewGame(self, deal, vul):
-		if(len(self.bridgeDeck != 52)):
+		if (len(self.bridgeDeck != 52)):
 			self.bridgeDeck = Deck()
-		self.bridgeDeck.shuffle()
+		self.bridgeDeck.Shuffle()
 
 	# -----------------------------------------------------
 	# SetDealer
-	# 	IN 		None
+	# IN 		None
 	#	OUT 	None
 	# -----------------------------------------------------
 	def SetDealer(self, deal):
-		if(deal in CARDINAL_POINTS):
+		if (deal in CARDINAL_POINTS):
 			self.Dealer = deal
 		else:
 			self.Dealer = None
@@ -260,13 +261,13 @@ class Bridge:
 	#	OUT 	char (N, E, S, W, None) Next Player Turn
 	# -----------------------------------------------------
 	def NextPlayer(self):
-		if(self.Turn == 'N'):
+		if (self.Turn == 'N'):
 			self.Turn = 'E'
-		elif(self.Turn == 'E'):
+		elif (self.Turn == 'E'):
 			self.Turn = 'S'
-		elif(self.Turn == 'S'):
+		elif (self.Turn == 'S'):
 			self.Turn == 'W'
-		elif(self.Turn == 'W'):
+		elif (self.Turn == 'W'):
 			self.Turn = 'N'
 		else:
 			self.Turn = None
@@ -286,27 +287,30 @@ class Bridge:
 	#	OUT 	None
 	# -----------------------------------------------------
 	def DealCards(self):
-		if(self.Dealer != None):
+		if (self.Dealer != None):
 			self.northP
-			for i in range(0,13):
+			for i in range(0, 13):
 				pass
+
 
 # *********************************************************************
 # Functions ...
 # *********************************************************************
 def load_image(filename, transparent=False):
-    try: image = pygame.image.load(filename)
+    try:
+		image = pygame.image.load(filename)
     except pygame.error, message:
         raise SystemExit, message
     image = image.convert()
     if transparent:
-         color = image.get_at((0,0))
-         image.set_colorkey(color, RLEACCEL)
+		color = image.get_at((0, 0))
+		image.set_colorkey(color, RLEACCEL)
     return image
+
 
 def card2filename(card):
 	filename = 'images/cards/'
-	rank = card.get_rank().lower()
+	rank = card.GetRank().lower()
 	if (rank == 'a'):
 		rank = '01'
 	elif (rank == 't'):
@@ -319,31 +323,35 @@ def card2filename(card):
 		rank = '13'
 	else:
 		rank = '0' + rank
-	suit = card.get_suit().lower()
+	suit = card.GetSuit().lower()
 	return filename + rank + suit + '.gif'
+
 
 def draw_hand(scr, posX, posY, hand, visible, color):
 	delta = 0
 	for card in hand:
-		if (visible):		# Show card
+		if (visible):  # Show card
 			img = load_image(card2filename(card))
-		else:				# Show back
+		else:  # Show back
 			img = load_image("images/cards/back.gif")
-		scr.blit(img,(posX + delta, posY))
+		scr.blit(img, (posX + delta, posY))
 		delta += VISUAL_CARD_WIDTH
-	pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+	pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH,
+								  CARD_RULER_HEIGHT], 0)
 	mytext = FontGame.render("North", True, (0, 0, 0))
-	scr.blit(mytext,(posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
+	scr.blit(mytext, (posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
 	pygame.display.flip()
+
 
 def GetIndexCardFromMouse(posX, player_hand):
 	if (len(player_hand) == 1):
 		ndx = 0
 	else:
 		ndx = (posX - EXTERNAL_MARGIN - CARD_RULER_WIDTH - INTERNAL_MARGIN) / VISUAL_CARD_WIDTH
-		if(ndx > 12):
+		if (ndx > 12):
 			ndx = 12
 	return ndx
+
 
 def CardUp(scr, ndx, player_hand):
 	posX = EXTERNAL_MARGIN + CARD_RULER_WIDTH + INTERNAL_MARGIN
@@ -352,28 +360,31 @@ def CardUp(scr, ndx, player_hand):
 	delta = 0
 	for card in player_hand:
 		img = load_image(card2filename(card))
-		if(delta == ndx and ndx != -1):
-			scr.blit(img,(posX + delta * VISUAL_CARD_WIDTH, posY - DELTA_SELECT))
+		if (delta == ndx and ndx != -1):
+			scr.blit(img, (posX + delta * VISUAL_CARD_WIDTH, posY - DELTA_SELECT))
 		else:
-			scr.blit(img,(posX + delta * VISUAL_CARD_WIDTH, posY))
+			scr.blit(img, (posX + delta * VISUAL_CARD_WIDTH, posY))
 		delta += 1
-	pygame.draw.rect(scr, VUL_COLOR, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+	pygame.draw.rect(scr, VUL_COLOR, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH,
+									  CARD_RULER_HEIGHT], 0)
 	mytext = FontGame.render("North", True, (0, 0, 0))
-	scr.blit(mytext,(posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
+	scr.blit(mytext, (posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
 	pygame.display.flip()
+
 
 def DrawBiddingWindow(scr, posX, posY):
 	deltaY = 0
-	for i in range (1,8):
+	for i in range(1, 8):
 		deltaX = 0
 		for j in ("c", "d", "h", "s", "nt"):
-			#filename = "0" + str(i) + j + ".gif"
-                        filename = "02c.png"
+			# filename = "0" + str(i) + j + ".gif"
+			filename = "02c.png"
 			img = load_image("images/bidding/" + filename, False)
-			scr.blit(img,(posX + deltaX * BID_CARD_WIDTH, posY + deltaY * BID_CARD_HEIGHT))
+			scr.blit(img, (posX + deltaX * BID_CARD_WIDTH, posY + deltaY * BID_CARD_HEIGHT))
 			deltaX += 1
 		deltaY += 1
 	pygame.display.flip()
+
 
 def DrawGeneralInfoWindow(scr):
 	pygame.draw.rect(scr, (180, 180, 180), [EXTERNAL_MARGIN, EXTERNAL_MARGIN, CARD_RULER_WIDTH, CARD_HEIGHT], 1)
@@ -384,7 +395,7 @@ def DrawGeneralInfoWindow(scr):
 print 'Hello Bridger!'
 print 'Window is ', WINDOW_WIDTH, WINDOW_HEIGHT
 deck = Deck()
-deck.shuffle()
+deck.Shuffle()
 print deck
 
 Game = Bridge()
@@ -394,11 +405,11 @@ EastPlayerHand = Hand()
 SouthPlayerHand = Hand()
 WestPlayerHand = Hand()
 
-for i in range(1,14):
-    NorthPlayerHand.add_card(deck.deal_card())
-    EastPlayerHand.add_card(deck.deal_card())
-    SouthPlayerHand.add_card(deck.deal_card())
-    WestPlayerHand.add_card(deck.deal_card())
+for i in range(1, 14):
+    NorthPlayerHand.AddCard(deck.deal_card())
+    EastPlayerHand.AddCard(deck.deal_card())
+    SouthPlayerHand.AddCard(deck.deal_card())
+    WestPlayerHand.AddCard(deck.deal_card())
 
 print "North Hand: ", NorthPlayerHand
 print "East Hand: ", EastPlayerHand
@@ -425,50 +436,59 @@ print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
 # *********************************************************************
 # Graphic part ...
 # *********************************************************************
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) #, pygame.RESIZABLE)
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))  # , pygame.RESIZABLE)
 pygame.display.set_caption("Bridger!")
 pygame.display.set_icon(pygame.image.load(LOGO_ICO))
 pygame.font.init()
 
 screen.fill(BG_COLOR)
-FontGame = pygame.font.SysFont("None", 36, True)	# Default sysfont, size=12 and bold
+FontGame = pygame.font.SysFont("None", 36, True)  # Default sysfont, size=12 and bold
 ## logo_image = pygame.transform.scale(load_image("images/Bridger Logo.png"), (100, 75))
 ## screen.blit(logo_image, (WINDOW_WIDTH / 2 - 50 , WINDOW_HEIGHT / 2 - 37))
 
-draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False, VUL_COLOR)
-draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
-draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True, VUL_COLOR)
-draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False, NOT_VUL_COLOR)
+draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN,
+		  NorthPlayerHand, False, VUL_COLOR)
+draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH,
+		  EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
+draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH,
+		  WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True, VUL_COLOR)
+draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False,
+		  NOT_VUL_COLOR)
 
 while True:
 	for event in pygame.event.get():
 		if (event.type == QUIT):
 			sys.exit(0)
-		elif (event.type == KEYDOWN):			# Key pressed ...
-			keys = pygame.key.get_pressed()		# Witch key?
-			if keys[K_n]:						# Test key in keys[]
+		elif (event.type == KEYDOWN):  # Key pressed ...
+			keys = pygame.key.get_pressed()  # Witch key?
+			if keys[K_n]:  # Test key in keys[]
 				deck = Deck()
-				deck.shuffle()
+				deck.Shuffle()
 				NorthPlayerHand = Hand()
 				EastPlayerHand = Hand()
 				SouthPlayerHand = Hand()
 				WestPlayerHand = Hand()
 
-				for i in range(0,13):
-				    NorthPlayerHand.add_card(deck.deal_card())
-				    EastPlayerHand.add_card(deck.deal_card())
-				    SouthPlayerHand.add_card(deck.deal_card())
-				    WestPlayerHand.add_card(deck.deal_card())
+				for i in range(0, 13):
+					NorthPlayerHand.AddCard(deck.deal_card())
+					EastPlayerHand.AddCard(deck.deal_card())
+					SouthPlayerHand.AddCard(deck.deal_card())
+					WestPlayerHand.AddCard(deck.deal_card())
 
 				NorthPlayerHand.Reorder("S", "H", "C", "D")
 				EastPlayerHand.Reorder("S", "H", "C", "D")
 				SouthPlayerHand.Reorder("S", "H", "C", "D")
 				WestPlayerHand.Reorder("S", "H", "C", "D")
 
-				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False, VUL_COLOR)
-				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
-				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True, VUL_COLOR)
-				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False, NOT_VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH,
+						  EXTERNAL_MARGIN, NorthPlayerHand, False, VUL_COLOR)
+				draw_hand(screen,
+						  WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH,
+						  EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH,
+						  WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, SouthPlayerHand, True, VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE,
+						  WestPlayerHand, False, NOT_VUL_COLOR)
 
 				print "New North Hand: ", NorthPlayerHand
 				print "New East Hand: ", EastPlayerHand
@@ -487,16 +507,24 @@ while True:
 				print "Have Clubs? ", SouthPlayerHand.HaveSuit("C")
 
 			elif keys[K_h]:
-				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, False, VUL_COLOR)
-				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
-				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, False, NOT_VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH,
+						  EXTERNAL_MARGIN, NorthPlayerHand, False, VUL_COLOR)
+				draw_hand(screen,
+						  WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH,
+						  EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, False, NOT_VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE,
+						  WestPlayerHand, False, NOT_VUL_COLOR)
 			elif keys[K_s]:
-				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, NorthPlayerHand, True, VUL_COLOR)
-				draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, True, NOT_VUL_COLOR)
-				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, WestPlayerHand, True, NOT_VUL_COLOR)
-		elif (event.type == KEYUP):				# Key released ...
+				draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH,
+						  EXTERNAL_MARGIN, NorthPlayerHand, True, VUL_COLOR)
+				draw_hand(screen,
+						  WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH,
+						  EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, EastPlayerHand, True, NOT_VUL_COLOR)
+				draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE,
+						  WestPlayerHand, True, NOT_VUL_COLOR)
+		elif (event.type == KEYUP):  # Key released ...
 			if event.key == pygame.K_q:
-				pass # sys.exit(0)
+				pass  # sys.exit(0)
 		elif (event.type == MOUSEBUTTONDOWN):
 			print "Mouse button pressed ..."
 			print pygame.mouse.get_pressed()
@@ -505,7 +533,7 @@ while True:
 			print "Mouse button released ..."
 			print pygame.mouse.get_pressed()
 			print pygame.mouse.get_pos()
-		else:		# Other events ...
+		else:  # Other events ...
 			pass
 
 	# Contol where the mouse is to lift card up/down
@@ -521,7 +549,8 @@ while True:
 		CardUp(screen, -1, SouthPlayerHand)
 
 	# Draw the Bidding Control Window ...
-	DrawBiddingWindow(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH + INTERNAL_MARGIN, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT)
+	DrawBiddingWindow(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH + INTERNAL_MARGIN,
+					  WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT)
 
 	# Draw the General Info Window ...
 	DrawGeneralInfoWindow(screen)
