@@ -94,21 +94,37 @@ class Deck:
 # *********************************************************************
 class Hand:
     def __init__(self):
-        self.hand_cards = []
+        self.HandCards = []
+        self.Spades = []
+        self.Hearts = []
+        self.Diamonds = []
+        self.Clubs = []
 
     def add_card(self, card):
-        self.hand_cards.append(card)
+        suit = card.get_suit()
+        if(suit in SUITS):
+        	self.HandCards.append(card)
+	        if(suit == 'S'):
+	        	self.Spades.append(card)
+	        elif(suit == 'H'):
+	        	self.Hearts.append(card)
+	        elif(suit == 'D'):
+	        	self.Diamonds.append(card)
+	        else:
+	        	self.Clubs.append(card)
+	    else:
+	    	return False
 
     def remove_card(self, card):
-        if (card in self.hand_cards):
-            self.hand_cards.remove(card)
+        if (card in self.HandCards):
+            self.HandCards.remove(card)
         else:
             # Error ...
             pass
 
     def max(self):			# Return the maximum card according to stablished ranking suits
     	max_card = False
-    	for card in self.hand_cards:
+    	for card in self.HandCards:
     		if (max_card == False):
     			max_card = card
     		if (card > max_card):
@@ -116,8 +132,8 @@ class Hand:
     	return max_card
 
     def Reorder(self, suit1, suit2, suit3, suit4):
-    	ordered_hand = Hand()
-    	for i in range(0,len(self.hand_cards)):
+    	OrderedHand = Hand()
+    	for i in range(0,len(self.HandCards)):
     		if(self.HaveSuit(suit1)):
     			card = self.MaxOfSuit(suit1)
     		elif(self.HaveSuit(suit2)):
@@ -127,18 +143,18 @@ class Hand:
     		elif(self.HaveSuit(suit4)):
     			card = self.MaxOfSuit(suit4)
     		self.remove_card(card)
-    		ordered_hand.add_card(card)
-    	self.hand_cards = ordered_hand
+    		OrderedHand.add_card(card)
+    	self.HandCards = OrderedHand
 
     def HaveSuit(self, suit):
-    	for card in self.hand_cards:
+    	for card in self.HandCards:
     		if(card.get_suit() == suit):
     			return True
     	return False
 
     def MaxOfSuit(self, suit):
     	max_card = False
-    	for card in self.hand_cards:
+    	for card in self.HandCards:
     		if(card.get_suit() == suit):
     			if(max_card == False):
     				max_card = card
@@ -149,7 +165,7 @@ class Hand:
 
     def MinOfSuit(self,suit):
     	min_card = False
-    	for card in self.hand_cards:
+    	for card in self.HandCards:
     		if(card.get_suit() == suit):
     			if(min_card == False):
     				min_card = card
@@ -163,18 +179,18 @@ class Hand:
 
     def __str__(self):
         hand_str = ""
-        for card in self.hand_cards:
+        for card in self.HandCards:
             hand_str += str(card) + " "
         return hand_str
 
     def __iter__(self):
-        return iter(self.hand_cards)
+        return iter(self.HandCards)
 
     def __getitem__(self, ndx):
-        return self.hand_cards[ndx]
+        return self.HandCards[ndx]
 
     def __len__(self):
-    	return len(self.hand_cards)
+    	return len(self.HandCards)
 
 # *********************************************************************
 # Class BridgePlayer
