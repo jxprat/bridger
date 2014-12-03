@@ -246,18 +246,19 @@ class Bridge:
         self.SouthP = BridgePlayer('S')
         self.westP = BridgePlayer('W')
 
-    def NewGame(self, deal, vul):
-        if (len(self.bridgeDeck != 52)):
-            self.bridgeDeck = Deck()
-            self.bridgeDeck.Shuffle()
+    def NewGame(self, deal):
+        self.bridgeDeck = Deck()
+        self.bridgeDeck.Shuffle()
 
 # -----------------------------------------------------
 # SetDealer
 # IN        None
-# OUT       None
+# OUT       Boolean
 # -----------------------------------------------------
     def SetDealer(self, deal):
+        retval = False
         if (deal in CARDINAL_POINTS):
+            retval = True
             self.Dealer = deal
             if(deal == 'N'):
             	self.northP.SetDealer(True)
@@ -269,6 +270,7 @@ class Bridge:
             	self.westP.SetDealer(True)
         else:
             self.Dealer = None
+        return retval
 
 # -----------------------------------------------------
 # NextPlayer
@@ -302,10 +304,39 @@ class Bridge:
 #   OUT     None
 # -----------------------------------------------------
     def DealCards(self):
+        retval = False
         if (self.Dealer != None):
-            self.northP
+            H1 = Hand()
+            H2 = Hand()
+            H3 = Hand()
+            H4 = Hand()
             for i in range(0, 13):
-                pass
+                H1.AddCard(self.bridgeDeck.deal_card())
+                H2.AddCard(self.bridgeDeck.deal_card())
+                H3.AddCard(self.bridgeDeck.deal_card())
+                H4.AddCard(self.bridgeDeck.deal_card())
+            if(self.Dealer == 'N'):
+                self.eastP.set_Hand(H1)
+                self.southP.set_Hand(H2)
+                self.westP.set_Hand(H3)
+                self.northP.set_Hand(H4)
+            elif(self.Dealer == 'E'):
+                self.southP.set_Hand(H1)
+                self.westP.set_Hand(H2)
+                self.northP.set_Hand(H3)
+                self.eastP.set_Hand(H4)
+            elif(self.Dealer == 'S'):
+                self.westP.set_Hand(H1)
+                self.northP.set_Hand(H2)
+                self.eastP.set_Hand(H3)
+                self.southP.set_Hand(H4)
+            else:
+                self.northP.set_Hand(H1)
+                self.eastP.set_Hand(H2)
+                self.southP.set_Hand(H3)
+                self.westP.set_Hand(H4)
+            retval = True
+        return retval
 
 
 # *********************************************************************
