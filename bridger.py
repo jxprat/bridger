@@ -46,8 +46,12 @@ CARDINAL_POINTS = ('N', 'E', 'S', 'W')
 # *********************************************************************
 class Card:
     def __init__(self, suit, rank):
-        self.suit = suit.upper()
-        self.rank = rank.upper()
+        if((suit.upper() in SUITS) and (rank.upper() in RANK)):
+            self.suit = suit.upper()
+            self.rank = rank.upper()
+        else:
+            self.suit = None
+            self.rank = None
 
     def GetSuit(self):
         return self.suit
