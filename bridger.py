@@ -145,27 +145,45 @@ class Hand:
             OrderedHand.AddCard(card)
         self.HandCards = OrderedHand
 
+# -----------------------------------------------------
+# HaveSuit
+# IN        char (S, H, D, C) selected suit
+# OUT       Integer representing the number of cards of the suit
+# -----------------------------------------------------
     def HaveSuit(self, suit):
         if (suit == 'S'):
-            return (len(self.Spades) > 0)
+            return (len(self.Spades))
         elif (suit == 'H'):
-            return (len(self.Hearts) > 0)
+            return (len(self.Hearts))
         elif (suit == 'D'):
-            return (len(self.Diamonds) > 0)
+            return (len(self.Diamonds))
         else:
-            return (len(self.Clubs) > 0)
+            return (len(self.Clubs))
 
+# -----------------------------------------------------
+# MaxOfSuit
+# IN        char (S, H, D, C) selected suit
+# OUT       Card/Boolean (the greater card of the suit)
+# -----------------------------------------------------
     def MaxOfSuit(self, suit):
-        max_card = False
-        for card in self.HandCards:
-            if (card.GetSuit() == suit):
-                if (max_card == False):
-                    max_card = card
-                else:
-                    if (card > max_card):
-                        max_card = card
-        return max_card
+        if(self.HaveSuit(suit) > 0):
+            pass
+        else:
+            return False
+        # for card in self.HandCards:
+        #     if (card.GetSuit() == suit):
+        #         if (max_card == False):
+        #             max_card = card
+        #         else:
+        #             if (card > max_card):
+        #                 max_card = card
+        # return max_card
 
+# -----------------------------------------------------
+# MinOfSuit
+# IN        char (S, H, D, C) selected suit
+# OUT       Card/Boolean (the smaller card of the suit)
+# -----------------------------------------------------
     def MinOfSuit(self, suit):
         min_card = False
         for card in self.HandCards:
