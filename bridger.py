@@ -237,22 +237,24 @@ class BridgePlayer:
 class Bridge:
     def __init__(self):
         self.bridgeDeck = Deck()
-        self.bridgeDeck.Shuffle()
+        #self.bridgeDeck.Shuffle()
         self.Dealer = None  # N, E, S, W
         self.Vulnerability = []  # N, E, S, W Also could be an empty list, meaning no vulnerability
         self.Turn = None  # N -> E -> S -> W -> N -> ...
         self.northP = BridgePlayer('N')
         self.eastP = BridgePlayer('E')
-        self.SouthP = BridgePlayer('S')
+        self.southP = BridgePlayer('S')
         self.westP = BridgePlayer('W')
 
-    def NewGame(self, deal):
+    def NewGame(self, dealer):
         self.bridgeDeck = Deck()
         self.bridgeDeck.Shuffle()
+        self.Dealer = dealer
+        self.Turn = dealer
 
 # -----------------------------------------------------
 # SetDealer
-# IN        None
+# IN        char (N, E, S, W, None) Player Position
 # OUT       Boolean
 # -----------------------------------------------------
     def SetDealer(self, deal):
@@ -261,13 +263,13 @@ class Bridge:
             retval = True
             self.Dealer = deal
             if(deal == 'N'):
-            	self.northP.SetDealer(True)
+            	self.northP.set_Dealer(True)
             elif(deal == 'E'):
-            	self.eastP.SetDealer(True)
+            	self.eastP.set_Dealer(True)
             elif(deal == 'S'):
-            	self.SouthP.SetDealer(True)
+            	self.southP.set_Dealer(True)
             else:
-            	self.westP.SetDealer(True)
+            	self.westP.set_Dealer(True)
         else:
             self.Dealer = None
         return retval
@@ -338,7 +340,18 @@ class Bridge:
             retval = True
         return retval
 
+# GetHand
+# IN        char (N, E, S, W, None) Player Position
+# OUT       Hand
+# -----------------------------------------------------
+    def GetHand(self, player_pos):
+        if(player_pos == 'N'):
+            return self.northP.get_Hand()
+        elif(player_pos == 'E'):
+            return self.eastP.get_Hand()
 
+    def GetDeck(self):
+        return self.bridgeDeck
 # *********************************************************************
 # Functions ...
 # *********************************************************************
@@ -436,8 +449,6 @@ deck = Deck()
 deck.Shuffle()
 print deck
 
-Game = Bridge()
-
 NorthPlayerHand = Hand()
 EastPlayerHand = Hand()
 SouthPlayerHand = Hand()
@@ -470,6 +481,22 @@ print "Max of Spades: ", SouthPlayerHand.MaxOfSuit("S")
 print "Max of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
 print "Min of Diamonds: ", SouthPlayerHand.MinOfSuit("D")
 print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
+
+# *********************************************************************
+# Testing new core classes ...
+# *********************************************************************
+
+print "*********************************************************************"
+Game = Bridge()
+Game.NewGame('N')
+Game.DealCards()
+print "Deck: ", Game.GetDeck()
+print "Turn: ", Game.GetTurn()
+print "North Hand: ", Game.GetHand('N')
+print "East Hand: ", Game.GetHand('E')
+print "South Hand: ", Game.GetHand('S')
+print "West Hand: ", Game.GetHand('W')
+print "*********************************************************************"
 
 # *********************************************************************
 # Graphic part ...
