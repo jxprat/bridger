@@ -245,12 +245,16 @@ class Bridge:
         self.eastP = BridgePlayer('E')
         self.southP = BridgePlayer('S')
         self.westP = BridgePlayer('W')
+        print " >>> Inside Bridge __init__ "
+        print " >>> ", self.bridgeDeck
 
     def NewGame(self, dealer):
-        self.bridgeDeck = Deck()
-        self.bridgeDeck.Shuffle()
+        #self.bridgeDeck = Deck()
+        #self.bridgeDeck.Shuffle()
         self.Dealer = dealer
         self.Turn = dealer
+        print " >>> Inside Bridge NewGame "
+        print " >>> ", self.bridgeDeck
 
 # -----------------------------------------------------
 # SetDealer
@@ -488,7 +492,7 @@ print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
 
 print "*********************************************************************"
 Game = Bridge()
-Game.NewGame('N')
+Game.NewGame('W')
 Game.DealCards()
 print "Deck: ", Game.GetDeck()
 print "Turn: ", Game.GetTurn()
