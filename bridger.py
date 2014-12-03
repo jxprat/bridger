@@ -202,6 +202,9 @@ class Hand:
 class BridgePlayer:
     def __init__(self, Pos):
         self.PlayerPosition = Pos  # N, E, S or W
+        self.Vulnerability = False
+        self.PlayerHand = None
+        self.isPlayerDealer = False
 
     def set_Position(self, Pos):
         self.PlayerPosition = Pos
@@ -256,6 +259,14 @@ class Bridge:
     def SetDealer(self, deal):
         if (deal in CARDINAL_POINTS):
             self.Dealer = deal
+            if(deal == 'N'):
+            	self.northP.SetDealer(True)
+            elif(deal == 'E'):
+            	self.eastP.SetDealer(True)
+            elif(deal == 'S'):
+            	self.SouthP.SetDealer(True)
+            else:
+            	self.westP.SetDealer(True)
         else:
             self.Dealer = None
 
