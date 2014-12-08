@@ -145,6 +145,9 @@ class Hand:
             OrderedHand.AddCard(card)
         self.HandCards = OrderedHand
 
+    def OrderSuit(self, suit):
+        pass
+
 # -----------------------------------------------------
 # HaveSuit
 # IN        char (S, H, D, C) selected suit
@@ -530,6 +533,10 @@ print "North Hand: ", Game.GetHand('N')
 print "East Hand: ", Game.GetHand('E')
 print "South Hand: ", Game.GetHand('S')
 print "West Hand: ", Game.GetHand('W')
+
+print "Testing badly ..."
+print "Diamonds Cards of North: ", 
+
 print "*********************************************************************"
 
 # *********************************************************************
