@@ -198,6 +198,18 @@ class Hand:
     def KillCard(self, card2kill):
         sel_card = False
 
+    def CardsOfSuit(self,suit):
+        if(suit == 'H'):
+            return self.Hearts
+        elif(suit == 'S'):
+            return self.Spades
+        elif(suit == 'D'):
+            return self.Diamonds
+        elif(suit == 'C'):
+            return self.Clubs
+        else:
+            return None
+
     def __str__(self):
         hand_str = ""
         for card in self.HandCards:
