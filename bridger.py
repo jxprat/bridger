@@ -465,44 +465,44 @@ def DrawGeneralInfoWindow(scr):
 # *********************************************************************
 # Main program ...
 # *********************************************************************
-print 'Hello Bridger!'
-print 'Window is ', WINDOW_WIDTH, WINDOW_HEIGHT
-deck = Deck()
-deck.Shuffle()
-print deck
+# print 'Hello Bridger!'
+# print 'Window is ', WINDOW_WIDTH, WINDOW_HEIGHT
+# deck = Deck()
+# deck.Shuffle()
+# print deck
 
-NorthPlayerHand = Hand()
-EastPlayerHand = Hand()
-SouthPlayerHand = Hand()
-WestPlayerHand = Hand()
+# NorthPlayerHand = Hand()
+# EastPlayerHand = Hand()
+# SouthPlayerHand = Hand()
+# WestPlayerHand = Hand()
 
-for i in range(1, 14):
-    NorthPlayerHand.AddCard(deck.deal_card())
-    EastPlayerHand.AddCard(deck.deal_card())
-    SouthPlayerHand.AddCard(deck.deal_card())
-    WestPlayerHand.AddCard(deck.deal_card())
+# for i in range(1, 14):
+#     NorthPlayerHand.AddCard(deck.deal_card())
+#     EastPlayerHand.AddCard(deck.deal_card())
+#     SouthPlayerHand.AddCard(deck.deal_card())
+#     WestPlayerHand.AddCard(deck.deal_card())
 
-print "North Hand: ", NorthPlayerHand
-print "East Hand: ", EastPlayerHand
-print "South Hand: ", SouthPlayerHand
-print "West Hand: ", WestPlayerHand
+# print "North Hand: ", NorthPlayerHand
+# print "East Hand: ", EastPlayerHand
+# print "South Hand: ", SouthPlayerHand
+# print "West Hand: ", WestPlayerHand
 
-print "Reordering al hands ... "
-NorthPlayerHand.Reorder("S", "H", "C", "D")
-EastPlayerHand.Reorder("S", "H", "C", "D")
-SouthPlayerHand.Reorder("S", "H", "C", "D")
-WestPlayerHand.Reorder("S", "H", "C", "D")
+# print "Reordering al hands ... "
+# NorthPlayerHand.Reorder("S", "H", "C", "D")
+# EastPlayerHand.Reorder("S", "H", "C", "D")
+# SouthPlayerHand.Reorder("S", "H", "C", "D")
+# WestPlayerHand.Reorder("S", "H", "C", "D")
 
-print "New North Hand: ", NorthPlayerHand
-print "New East Hand: ", EastPlayerHand
-print "New South Hand: ", SouthPlayerHand
-print "New West Hand: ", WestPlayerHand
+# print "New North Hand: ", NorthPlayerHand
+# print "New East Hand: ", EastPlayerHand
+# print "New South Hand: ", SouthPlayerHand
+# print "New West Hand: ", WestPlayerHand
 
-print "Max/Min of Suits ..."
-print "Max of Spades: ", SouthPlayerHand.MaxOfSuit("S")
-print "Max of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
-print "Min of Diamonds: ", SouthPlayerHand.MinOfSuit("D")
-print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
+# print "Max/Min of Suits ..."
+# print "Max of Spades: ", SouthPlayerHand.MaxOfSuit("S")
+# print "Max of Hearts: ", SouthPlayerHand.MaxOfSuit("H")
+# print "Min of Diamonds: ", SouthPlayerHand.MinOfSuit("D")
+# print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
 
 # *********************************************************************
 # Testing new core classes ...
@@ -511,8 +511,8 @@ print "Min of Clubs: ", SouthPlayerHand.MinOfSuit("C")
 print "*********************************************************************"
 Game = Bridge()
 Game.NewGame('N')
-Game.DealCards()
 print "Deck: ", Game.GetDeck()
+Game.DealCards()
 print "Turn: ", Game.GetTurn()
 print "North Hand: ", Game.GetHand('N')
 print "East Hand: ", Game.GetHand('E')
