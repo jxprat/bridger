@@ -38,9 +38,8 @@ LOGO_ICO = "images/bridger.png"
 
 SUITS = ('C', 'S', 'H', 'D')  # Clubs, Spades, Hearts, Daemonds
 RANK = ('A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K')
-CARDINAL_POINTS = ('N', 'E', 'S', 'W')
-
 VALUES = {'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'C': 0, 'D': 20, 'H': 40, 'S': 60}
+CARDINAL_POINTS = ('N', 'E', 'S', 'W')
 
 # *********************************************************************
 # Class Card
@@ -83,7 +82,7 @@ class Deck:
     def Shuffle(self):
         random.shuffle(self.deck)
 
-    def DealCard(self):
+    def deal_card(self):
         return self.deck.pop(-1)
 
     def __str__(self):
@@ -102,28 +101,52 @@ class Deck:
 class Hand:
     def __init__(self):
         self.HandCards = []
+        self.Spades = []
+        self.Hearts = []
+        self.Diamonds = []
+        self.Clubs = []
 
     def AddCard(self, card):
+        suit = card.GetSuit()
         self.HandCards.append(card)
+        if (suit == 'S'):
+            self.Spades.append(card)
+        elif (suit == 'H'):
+            self.Hearts.append(card)
+        elif (suit == 'D'):
+            self.Diamonds.append(card)
+        else:
+            self.Clubs.append(card)
 
     def RemoveCard(self, card):
+        suit = card.GetSuit()
         self.HandCards.remove(card)
+        if (suit == 'S'):
+            self.Spades.remove(card)
+        elif (suit == 'H'):
+            self.Hearts.remove(card)
+        elif (suit == 'D'):
+            self.Diamonds.remove(card)
+        else:
+            self.Clubs.remove(card)
 
     def Reorder(self, suit1, suit2, suit3, suit4):
+        OrderedHand = Hand()
+        for i in range(0, len(self.HandCards)):
+            if (self.HaveSuit(suit1)):
+                card = self.MaxOfSuit(suit1)
+            elif (self.HaveSuit(suit2)):
+                card = self.MaxOfSuit(suit2)
+            elif (self.HaveSuit(suit3)):
+                card = self.MaxOfSuit(suit3)
+            elif (self.HaveSuit(suit4)):
+                card = self.MaxOfSuit(suit4)
+            self.RemoveCard(card)
+            OrderedHand.AddCard(card)
+        self.HandCards = OrderedHand
 
-        # OrderedHand = Hand()
-        # for i in range(0, len(self.HandCards)):
-        #     if (self.HaveSuit(suit1)):
-        #         card = self.MaxOfSuit(suit1)
-        #     elif (self.HaveSuit(suit2)):
-        #         card = self.MaxOfSuit(suit2)
-        #     elif (self.HaveSuit(suit3)):
-        #         card = self.MaxOfSuit(suit3)
-        #     elif (self.HaveSuit(suit4)):
-        #         card = self.MaxOfSuit(suit4)
-        #     self.RemoveCard(card)
-        #     OrderedHand.AddCard(card)
-        # self.HandCards = OrderedHand
+    def OrderSuit(self, suit):
+        pass
 
 # -----------------------------------------------------
 # HaveSuit
@@ -146,15 +169,18 @@ class Hand:
 # OUT       Card/Boolean (the greater card of the suit)
 # -----------------------------------------------------
     def MaxOfSuit(self, suit):
-        max_card = False
-        for card in self.HandCards:
-            if (card.GetSuit() == suit):
-                if (max_card == False):
-                    max_card = card
-                else:
-                    if (card > max_card):
-                        max_card = card
-        return max_card
+        if(self.HaveSuit(suit) > 0):
+            pass
+        else:
+            return False
+        # for card in self.HandCards:
+        #     if (card.GetSuit() == suit):
+        #         if (max_card == False):
+        #             max_card = card
+        #         else:
+        #             if (card > max_card):
+        #                 max_card = card
+        # return max_card
 
 # -----------------------------------------------------
 # MinOfSuit
@@ -320,10 +346,10 @@ class Bridge:
             H3 = Hand()
             H4 = Hand()
             for i in range(0, 13):
-                H1.AddCard(self.bridgeDeck.DealCard())
-                H2.AddCard(self.bridgeDeck.DealCard())
-                H3.AddCard(self.bridgeDeck.DealCard())
-                H4.AddCard(self.bridgeDeck.DealCard())
+                H1.AddCard(self.bridgeDeck.deal_card())
+                H2.AddCard(self.bridgeDeck.deal_card())
+                H3.AddCard(self.bridgeDeck.deal_card())
+                H4.AddCard(self.bridgeDeck.deal_card())
             if(self.Dealer == 'N'):
                 self.eastP.set_Hand(H1)
                 self.southP.set_Hand(H2)
@@ -466,10 +492,10 @@ def DrawGeneralInfoWindow(scr):
 # WestPlayerHand = Hand()
 
 # for i in range(1, 14):
-#     NorthPlayerHand.AddCard(deck.DealCard())
-#     EastPlayerHand.AddCard(deck.DealCard())
-#     SouthPlayerHand.AddCard(deck.DealCard())
-#     WestPlayerHand.AddCard(deck.DealCard())
+#     NorthPlayerHand.AddCard(deck.deal_card())
+#     EastPlayerHand.AddCard(deck.deal_card())
+#     SouthPlayerHand.AddCard(deck.deal_card())
+#     WestPlayerHand.AddCard(deck.deal_card())
 
 # print "North Hand: ", NorthPlayerHand
 # print "East Hand: ", EastPlayerHand
@@ -544,10 +570,10 @@ print "*********************************************************************"
 #                 WestPlayerHand = Hand()
 
 #                 for i in range(0, 13):
-#                     NorthPlayerHand.AddCard(deck.DealCard())
-#                     EastPlayerHand.AddCard(deck.DealCard())
-#                     SouthPlayerHand.AddCard(deck.DealCard())
-#                     WestPlayerHand.AddCard(deck.DealCard())
+#                     NorthPlayerHand.AddCard(deck.deal_card())
+#                     EastPlayerHand.AddCard(deck.deal_card())
+#                     SouthPlayerHand.AddCard(deck.deal_card())
+#                     WestPlayerHand.AddCard(deck.deal_card())
 
 #                 NorthPlayerHand.Reorder("S", "H", "C", "D")
 #                 EastPlayerHand.Reorder("S", "H", "C", "D")
