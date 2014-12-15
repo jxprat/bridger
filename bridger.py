@@ -109,22 +109,16 @@ class Hand:
     def RemoveCard(self, card):
         self.HandCards.remove(card)
 
-    def Reorder(self, suit1, suit2, suit3, suit4):
-        pass
-
-        # OrderedHand = Hand()
-        # for i in range(0, len(self.HandCards)):
-        #     if (self.HaveSuit(suit1)):
-        #         card = self.MaxOfSuit(suit1)
-        #     elif (self.HaveSuit(suit2)):
-        #         card = self.MaxOfSuit(suit2)
-        #     elif (self.HaveSuit(suit3)):
-        #         card = self.MaxOfSuit(suit3)
-        #     elif (self.HaveSuit(suit4)):
-        #         card = self.MaxOfSuit(suit4)
-        #     self.RemoveCard(card)
-        #     OrderedHand.AddCard(card)
-        # self.HandCards = OrderedHand
+# -----------------------------------------------------
+# Order
+# IN        
+# OUT       Ordered Hand using Spades, Hearts, Diamonds and Clubs suit order
+# -----------------------------------------------------
+    def Order(self):
+        for i in range(len(self.HandCards)):
+            for j in range(len(self.HandCards) - 1 - i):
+                if(self.HandCards[j] > self.HandCards[j + 1]):
+                    self.HandCards[j], self.HandCards[j + 1] = self.HandCards[j + 1], self.HandCards[j]
 
 # -----------------------------------------------------
 # HaveSuit
@@ -494,7 +488,8 @@ print "South Hand: ", Game.GetHand('S')
 print "West Hand: ", Game.GetHand('W')
 
 print "Testing badly ..."
-print "Diamonds Cards of North: ", 
+North_Hand = Game.GetHand('N')
+print "Diamonds Cards of North: ", North_Hand.Order()
 
 print "*********************************************************************"
 
