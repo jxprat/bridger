@@ -110,6 +110,7 @@ class Hand:
         self.HandCards.remove(card)
 
     def Reorder(self, suit1, suit2, suit3, suit4):
+        pass
 
         # OrderedHand = Hand()
         # for i in range(0, len(self.HandCards)):
@@ -131,14 +132,7 @@ class Hand:
 # OUT       Integer representing the number of cards of the suit
 # -----------------------------------------------------
     def HaveSuit(self, suit):
-        if (suit == 'S'):
-            return (len(self.Spades))
-        elif (suit == 'H'):
-            return (len(self.Hearts))
-        elif (suit == 'D'):
-            return (len(self.Diamonds))
-        else:
-            return (len(self.Clubs))
+        pass
 
 # -----------------------------------------------------
 # MaxOfSuit
@@ -176,16 +170,7 @@ class Hand:
         sel_card = False
 
     def CardsOfSuit(self,suit):
-        if(suit == 'H'):
-            return self.Hearts
-        elif(suit == 'S'):
-            return self.Spades
-        elif(suit == 'D'):
-            return self.Diamonds
-        elif(suit == 'C'):
-            return self.Clubs
-        else:
-            return None
+        pass
 
     def __str__(self):
         hand_str = ""
