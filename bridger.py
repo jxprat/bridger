@@ -117,7 +117,7 @@ class Hand:
     def Order(self):
         for i in range(len(self.HandCards)):
             for j in range(len(self.HandCards) - 1 - i):
-                if(self.HandCards[j] > self.HandCards[j + 1]):
+                if(self.HandCards[j] < self.HandCards[j + 1]):
                     self.HandCards[j], self.HandCards[j + 1] = self.HandCards[j + 1], self.HandCards[j]
 
 # -----------------------------------------------------
@@ -126,7 +126,11 @@ class Hand:
 # OUT       Integer representing the number of cards of the suit
 # -----------------------------------------------------
     def HaveSuit(self, suit):
-        pass
+        retval = 0
+        for card in self.HandCards:
+            if (card.GetSuit() == suit):
+                retval += 1
+        return retval
 
 # -----------------------------------------------------
 # MaxOfSuit
@@ -223,7 +227,6 @@ class BridgePlayer:
 class Bridge:
     def __init__(self):
         self.bridgeDeck = Deck()
-        self.bridgeDeck.Shuffle()
         self.Dealer = None  # N, E, S, W
         self.Vulnerability = []  # N, E, S, W Also could be an empty list, meaning no vulnerability
         self.Turn = None  # N -> E -> S -> W -> N -> ...
@@ -232,11 +235,17 @@ class Bridge:
         self.southP = BridgePlayer('S')
         self.westP = BridgePlayer('W')
 
-    def NewGame(self, dealer):
+    def NewGame(self, dealer, vul = None):
         self.bridgeDeck = Deck()
         self.bridgeDeck.Shuffle()
         self.Dealer = dealer
         self.Turn = dealer
+        self.Vulnerability = vul
+        self.deal_cards()
+        self.northP.PlayerHand.Order()
+        self.eastP.PlayerHand.Order()
+        self.southP.PlayerHand.Order()
+        self.westP.PlayerHand.Order()
 
 # -----------------------------------------------------
 # SetDealer
@@ -291,7 +300,7 @@ class Bridge:
 #   IN      None
 #   OUT     None
 # -----------------------------------------------------
-    def DealCards(self):
+    def deal_cards(self):
         retval = False
         if (self.Dealer != None):
             H1 = Hand()
@@ -340,8 +349,19 @@ class Bridge:
         else:
             return self.westP.get_Hand()
 
+    def set_hand(self,player_pos, hand):
+        if(player_pos == 'N'):
+            self.northP.set_Hand(hand)
+        elif(player_pos == 'E'):
+            self.eastP.set_Hand(hand)
+        elif(player_pos == 'S'):
+            self.southP.set_Hand(hand)
+        else:
+            self.westP.set_Hand(hand)
+
     def GetDeck(self):
         return self.bridgeDeck
+
 # *********************************************************************
 # Functions ...
 # *********************************************************************
@@ -478,18 +498,19 @@ def DrawGeneralInfoWindow(scr):
 
 print "*********************************************************************"
 Game = Bridge()
-Game.NewGame('N')
+Game.NewGame('W')
 print "Deck: ", Game.GetDeck()
-Game.DealCards()
 print "Turn: ", Game.GetTurn()
 print "North Hand: ", Game.GetHand('N')
 print "East Hand: ", Game.GetHand('E')
 print "South Hand: ", Game.GetHand('S')
 print "West Hand: ", Game.GetHand('W')
 
-print "Testing badly ..."
-North_Hand = Game.GetHand('N')
-print "Diamonds Cards of North: ", North_Hand.Order()
+my_hand = Game.GetHand('S')
+print "My Hand: ", my_hand
+for suit in SUITS:
+    print "Max of : ", my_hand.MaxOfSuit(suit)
+    print "Min of : ", my_hand.MinOfSuit(suit)
 
 print "*********************************************************************"
 
