@@ -125,7 +125,7 @@ class Hand:
 # IN        char (S, H, D, C) selected suit
 # OUT       Integer representing the number of cards of the suit
 # -----------------------------------------------------
-    def HaveSuit(self, suit):
+    def HowMany(self, suit):
         retval = 0
         for card in self.HandCards:
             if (card.GetSuit() == suit):
@@ -164,11 +164,12 @@ class Hand:
                         min_card = card
         return min_card
 
-    def KillCard(self, card2kill):
-        sel_card = False
-
     def CardsOfSuit(self,suit):
-        pass
+        retval = Hand()
+        for card in self.HandCards:
+            if(card.GetSuit == suit):
+                retval.AddCard(card)
+        return retval
 
     def __str__(self):
         hand_str = ""
