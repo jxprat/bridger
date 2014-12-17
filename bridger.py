@@ -164,7 +164,16 @@ class Hand:
                         min_card = card
         return min_card
 
-    def CardsOfSuit(self,suit):
+    def KillCard(self, card_to_kill):
+        ret_card = False
+        suit = card_to_kill.GetSuit()
+        for card in self.HandCards:
+            if(card.GetSuit() == suit):
+                if(card > card_to_kill):
+                    ret_card = card
+        return ret_card
+
+    def CardsOfSuit(self, suit):
         retval = Hand()
         for card in self.HandCards:
             if(card.GetSuit == suit):
