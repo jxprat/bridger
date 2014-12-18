@@ -176,7 +176,7 @@ class Hand:
     def CardsOfSuit(self, suit):
         retval = Hand()
         for card in self.HandCards:
-            if(card.GetSuit == suit):
+            if(card.GetSuit() == suit):
                 retval.AddCard(card)
         return retval
 
@@ -515,17 +515,21 @@ print "North Hand: ", Game.GetHand('N')
 print "East Hand: ", Game.GetHand('E')
 print "South Hand: ", Game.GetHand('S')
 print "West Hand: ", Game.GetHand('W')
+print
 
 my_hand = Game.GetHand('S')
 print "My Hand: ", my_hand
 for suit in SUITS:
     print "Num cards: ", my_hand.HowMany(suit)
+    print "Cads of suit: ", my_hand.CardsOfSuit(suit)
     print "Max of : ", my_hand.MaxOfSuit(suit)
     print "Min of : ", my_hand.MinOfSuit(suit)
 
+print
 card_to_beat = Card('S', '8')
 print "Kill Card ", card_to_beat, my_hand.KillCard(card_to_beat)
 
+print
 print "*********************************************************************"
 
 # *********************************************************************
