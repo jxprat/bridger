@@ -519,8 +519,12 @@ print "West Hand: ", Game.GetHand('W')
 my_hand = Game.GetHand('S')
 print "My Hand: ", my_hand
 for suit in SUITS:
+    print "Num cards: ", my_hand.HowMany(suit)
     print "Max of : ", my_hand.MaxOfSuit(suit)
     print "Min of : ", my_hand.MinOfSuit(suit)
+
+card_to_beat = Card('S', '8')
+print "Kill Card ", card_to_beat, my_hand.KillCard(card_to_beat)
 
 print "*********************************************************************"
 
