@@ -120,6 +120,14 @@ class Hand:
                 if(self.HandCards[j] < self.HandCards[j + 1]):
                     self.HandCards[j], self.HandCards[j + 1] = self.HandCards[j + 1], self.HandCards[j]
 
+    def ReOrder(self, s1, s2, s3, s4):
+        new_hand = Hand()
+        new_hand = self.CardsOfSuit(s1)
+        new_hand.HandCards += self.CardsOfSuit(s2)
+        new_hand.HandCards += self.CardsOfSuit(s3)
+        new_hand.HandCards += self.CardsOfSuit(s4)
+        self.HandCards = new_hand.HandCards
+
 # -----------------------------------------------------
 # HaveSuit
 # IN        char (S, H, D, C) selected suit
@@ -519,6 +527,8 @@ print
 
 my_hand = Game.GetHand('S')
 print "My Hand: ", my_hand
+my_hand.ReOrder('S', 'H', 'C', 'D')
+print "Reordered Hand: ", my_hand
 for suit in SUITS:
     print "Num cards: ", my_hand.HowMany(suit)
     print "Cads of suit: ", my_hand.CardsOfSuit(suit)
