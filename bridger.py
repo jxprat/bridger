@@ -60,6 +60,9 @@ class Card:
     def GetRank(self):
         return self.rank
 
+    def IsHonor(self):
+        return (self.rank == 'A' or self.rank == 'K' or self.rank == 'Q' or self.rank == 'J')
+
     def __gt__(self, other):
         if (self.suit == other.suit):
             return VALUES[self.rank] > VALUES[other.rank]
@@ -102,6 +105,10 @@ class Deck:
 class Hand:
     def __init__(self):
         self.HandCards = []
+#        self.Spades = 0
+#        self.Hearts = 0
+#        self.Diamonds = 0
+#        self.Clubs = 0
 
     def AddCard(self, card):
         self.HandCards.append(card)
@@ -187,6 +194,38 @@ class Hand:
             if(card.GetSuit() == suit):
                 retval.AddCard(card)
         return retval
+
+    def HonorPoints(self):
+        hp = 0
+        for card in self.HandCards:
+            rank = card.GetRank()
+            if(rank == 'A'):
+                hp += 4
+            elif(rank == 'K'):
+                hp += 3
+            elif(rank == 'Q'):
+                hp += 2
+            elif(rank == 'J'):
+                hp += 1
+        return hp
+
+### Retocar porque hay que tener mas cosas en consideracion (que no sea triunfo, honores secos, ...)
+    def DistributionPoints(self):
+        dp = 0
+        for s in SUITS:
+            if(self.HowMany(s) == 0):
+                dp += 3
+            elif(self.HowMany(s) == 1):
+                dp += 2
+            elif(self.HowMany(s) == 2):
+                dp += 1
+        return dp
+
+    def IsBalanced(self):
+        spades = self.HowMany('S')
+        hearts = self.HowMany('H')
+        diamonds = self.HowMany('D')
+        clubs = self.HowMany('C')
 
     def __str__(self):
         hand_str = ""
