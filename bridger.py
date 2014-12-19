@@ -232,10 +232,12 @@ class Hand:
             if(spades > 2 and hearts > 2 and diamonds > 2 and clubs > 2): # No hay doubletones ...
                 retval = True
             else:
-                aux += (spades > 1)
-                aux += (hearts > 1)
-                aux += (diamonds > 1)
-                aux += (clubs > 1)
+                aux += (spades == 2)
+                aux += (hearts == 2)
+                aux += (diamonds == 2)
+                aux += (clubs == 2)
+                if(aux == 1):
+                    retval = True
         return retval
 
     def __str__(self):
@@ -576,10 +578,11 @@ print "West Hand: ", Game.GetHand('W')
 print
 
 my_hand = Game.GetHand('S')
-print "My Hand: ", my_hand
+print "My Hand: \t\t", my_hand
 my_hand.ReOrder('S', 'H', 'C', 'D')
-print "Reordered Hand: ", my_hand
+print "Reordered Hand: \t", my_hand
 print "Is Balanced? ", my_hand.IsBalanced()
+print "Honor Points: ", my_hand.HonorPoints()
 for suit in SUITS:
     print "Num cards: ", my_hand.HowMany(suit)
     print "Cads of suit: ", my_hand.CardsOfSuit(suit)
