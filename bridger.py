@@ -222,10 +222,21 @@ class Hand:
         return dp
 
     def IsBalanced(self):
+        retval = False
+        aux = 0
         spades = self.HowMany('S')
         hearts = self.HowMany('H')
         diamonds = self.HowMany('D')
         clubs = self.HowMany('C')
+        if(spades > 1 and hearts > 1 and diamonds > 1 and clubs > 1): # No hay fallos ni semifallos
+            if(spades > 2 and hearts > 2 and diamonds > 2 and clubs > 2): # No hay doubletones ...
+                retval = True
+            else:
+                aux += (spades > 1)
+                aux += (hearts > 1)
+                aux += (diamonds > 1)
+                aux += (clubs > 1)
+        return retval
 
     def __str__(self):
         hand_str = ""
@@ -568,6 +579,7 @@ my_hand = Game.GetHand('S')
 print "My Hand: ", my_hand
 my_hand.ReOrder('S', 'H', 'C', 'D')
 print "Reordered Hand: ", my_hand
+print "Is Balanced? ", my_hand.IsBalanced()
 for suit in SUITS:
     print "Num cards: ", my_hand.HowMany(suit)
     print "Cads of suit: ", my_hand.CardsOfSuit(suit)
