@@ -405,6 +405,18 @@ class Bridge:
             retval = True
         return retval
 
+    def GetPlayer(self, player_pos):
+        retval = False
+        if(player_pos == 'N'):
+            retval = self.northP
+        elif(player_pos == 'E'):
+            retval = self.eastP
+        elif(player_pos == 'S'):
+            retval = self.southP
+        elif(player_pos == 'W'):
+            retval = self.westP
+        return retval
+
 # GetHand
 # IN        char (N, E, S, W, None) Player Position
 # OUT       Hand
@@ -464,9 +476,23 @@ def card2filename(card):
     suit = card.GetSuit().lower()
     return filename + rank + suit + '.gif'
 
-def draw_hand(scr, posX, posY, hand, visible, color):
+def draw_hand_ORIGINAL(scr, posX, posY, hand, visible, color):
     delta = 0
     for card in hand:
+        if (visible):  # Show card
+            img = load_image(card2filename(card))
+        else:  # Show back
+            img = load_image("images/cards/back.gif")
+        scr.blit(img, (posX + delta, posY))
+        delta += VISUAL_CARD_WIDTH
+    pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+    mytext = FontGame.render("North", True, (0, 0, 0))
+    scr.blit(mytext, (posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
+    pygame.display.flip()
+
+def draw_hand(scr, posX, posY, player, visible, color):
+    delta = 0
+    for card in player.get_Hand():
         if (visible):  # Show card
             img = load_image(card2filename(card))
         else:  # Show back
@@ -613,10 +639,10 @@ pygame.font.init()
 screen.fill(BG_COLOR)
 FontGame = pygame.font.SysFont("None", 36, True)  # Default sysfont, size=12 and bold
 
-draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetHand('N'), False, VUL_COLOR)
-draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetHand('E'), False, NOT_VUL_COLOR)
-draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, Game.GetHand('S'), True, VUL_COLOR)
-draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetHand('W'), False, NOT_VUL_COLOR)
+draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetPlayer('N'), False, VUL_COLOR)
+draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('E'), False, NOT_VUL_COLOR)
+draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, Game.GetPlayer('S'), True, VUL_COLOR)
+draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('W'), False, NOT_VUL_COLOR)
 
 while True:
     pass
@@ -628,19 +654,19 @@ while True:
             if keys[K_n]:  # Test key in keys[]
                 Game.NewGame('N')
 
-                draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetHand('N'), False, VUL_COLOR)
-                draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetHand('E'), False, NOT_VUL_COLOR)
-                draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, Game.GetHand('S'), True, VUL_COLOR)
-                draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetHand('W'), False, NOT_VUL_COLOR)
+                draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetPlayer('N'), False, VUL_COLOR)
+                draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('E'), False, NOT_VUL_COLOR)
+                draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT, Game.GetPlayer('S'), True, VUL_COLOR)
+                draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('W'), False, NOT_VUL_COLOR)
 
             elif keys[K_h]:
-                draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetHand('N'), False, VUL_COLOR)
-                draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetHand('E'), False, NOT_VUL_COLOR)
-                draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetHand('W'), False, NOT_VUL_COLOR)
+                draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetPlayer('N'), False, VUL_COLOR)
+                draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('E'), False, NOT_VUL_COLOR)
+                draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('W'), False, NOT_VUL_COLOR)
             elif keys[K_s]:
-                draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetHand('N'), True, VUL_COLOR)
-                draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetHand('E'), True, NOT_VUL_COLOR)
-                draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetHand('W'), True, NOT_VUL_COLOR)
+                draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetPlayer('N'), True, VUL_COLOR)
+                draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('E'), True, NOT_VUL_COLOR)
+                draw_hand(screen, EXTERNAL_MARGIN + INTERNAL_MARGIN, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('W'), True, NOT_VUL_COLOR)
 
         elif (event.type == KEYUP):  # Key released ...
             if event.key == pygame.K_q:
