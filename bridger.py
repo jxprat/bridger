@@ -269,7 +269,7 @@ class BridgePlayer:
     def set_Position(self, Pos):
         self.PlayerPosition = Pos
 
-    def get_Position(self):
+    def GetPosition(self):
         return self.PlayerPosition
 
     def set_Vulnerability(self, v):
@@ -476,20 +476,6 @@ def card2filename(card):
     suit = card.GetSuit().lower()
     return filename + rank + suit + '.gif'
 
-def draw_hand_ORIGINAL(scr, posX, posY, hand, visible, color):
-    delta = 0
-    for card in hand:
-        if (visible):  # Show card
-            img = load_image(card2filename(card))
-        else:  # Show back
-            img = load_image("images/cards/back.gif")
-        scr.blit(img, (posX + delta, posY))
-        delta += VISUAL_CARD_WIDTH
-    pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
-    mytext = FontGame.render("North", True, (0, 0, 0))
-    scr.blit(mytext, (posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
-    pygame.display.flip()
-
 def draw_hand(scr, posX, posY, player, visible, color):
     delta = 0
     for card in player.get_Hand():
@@ -499,8 +485,16 @@ def draw_hand(scr, posX, posY, player, visible, color):
             img = load_image("images/cards/back.gif")
         scr.blit(img, (posX + delta, posY))
         delta += VISUAL_CARD_WIDTH
+    if(player.GetPosition() == 'N'):
+        player_pos = 'North'
+    elif(player.GetPosition() == 'E'):
+        player_pos = 'East'
+    elif(player.GetPosition() == 'S'):
+        player_pos = 'South'
+    elif(player.GetPosition() == 'W'):
+        player_pos = 'West'
     pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
-    mytext = FontGame.render("North", True, (0, 0, 0))
+    mytext = FontGame.render(player_pos, True, (0, 0, 0))
     scr.blit(mytext, (posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
     pygame.display.flip()
 
