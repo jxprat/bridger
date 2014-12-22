@@ -386,22 +386,22 @@ class Bridge:
 #   IN      Integer (1, 2, 3. ... 7) Representing the number of "bazas" to win
 #   OUT     
 # -----------------------------------------------------
-def SetContract(self, bazas):
-    self.Bazas = bazas
+    def SetContract(self, bazas):
+        self.Bazas = bazas
 
-def GetContract(self):
-    return self.Bazas
+    def GetContract(self):
+        return self.Bazas
 
 # -----------------------------------------------------
 # SetTriump
 #   IN      char (S, H, D, C, NT)
 #   OUT     
 # -----------------------------------------------------
-def SetTriump(self, tr):
-    self.Triump = tr
+    def SetTriump(self, tr):
+        self.Triump = tr
 
-def GetTriump(self):
-    return self.Triump
+    def GetTriump(self):
+        return self.Triump
 
 # -----------------------------------------------------
 # DealCards
