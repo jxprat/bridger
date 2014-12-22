@@ -272,7 +272,7 @@ class BridgePlayer:
     def GetPosition(self):
         return self.PlayerPosition
 
-    def set_Vulnerability(self, v):
+    def SetVulnerability(self, v):
         self.Vulnerability = v
 
     def IsVulnerable(self):
@@ -298,7 +298,6 @@ class Bridge:
     def __init__(self):
         self.bridgeDeck = Deck()
         self.Dealer = None  # N, E, S, W
-        self.Vulnerability = []  # N, E, S, W Also could be an empty list, meaning no vulnerability
         self.Turn = None  # N -> E -> S -> W -> N -> ...
         self.northP = BridgePlayer('N')
         self.eastP = BridgePlayer('E')
@@ -310,12 +309,15 @@ class Bridge:
         self.bridgeDeck.Shuffle()
         self.Dealer = dealer
         self.Turn = dealer
-        self.Vulnerability = vul
         self.deal_cards()
         self.northP.PlayerHand.Order()
         self.eastP.PlayerHand.Order()
         self.southP.PlayerHand.Order()
         self.westP.PlayerHand.Order()
+        self.northP.SetVulnerability(vul[0])
+        self.eastP.SetVulnerability(vul[1])
+        self.southP.SetVulnerability(vul[2])
+        self.westP.SetVulnerability(vul[3])
 
 # -----------------------------------------------------
 # SetDealer
@@ -629,7 +631,7 @@ def DrawGeneralInfoWindow(scr):
 # Main Bridge Init ...
 # *********************************************************************
 Game = Bridge()
-Game.NewGame('N', [])
+Game.NewGame('N', [False, False, False, False])
 # *********************************************************************
 # Graphic part ...
 # *********************************************************************
@@ -654,7 +656,7 @@ while True:
         elif (event.type == KEYDOWN):  # Key pressed ...
             keys = pygame.key.get_pressed()  # Witch key?
             if keys[K_n]:  # Test key in keys[]
-                Game.NewGame('N', ['N', 'S'])
+                Game.NewGame('N', [False, True, False, True])
 
                 draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetPlayer('N'), False)
                 draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('E'), False)
@@ -697,7 +699,7 @@ while True:
         CardUp(screen, -1, Game.GetPlayer('S'))
 
     # Draw the Bidding Control Window ...
-    DrawBiddingWindow(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH + INTERNAL_MARGIN, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT)
+    ##DrawBiddingWindow(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH + INTERNAL_MARGIN, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT)
 
     # Draw the General Info Window ...
-    DrawGeneralInfoWindow(screen)
+    ##DrawGeneralInfoWindow(screen)
