@@ -497,12 +497,20 @@ def DrawHand(scr, posX, posY, player, visible):
         delta += VISUAL_CARD_WIDTH
     if(player.GetPosition() == 'N'):
         player_pos = 'North'
+        if(player.IsDealer()):
+            player_pos += ' (D)'
     elif(player.GetPosition() == 'E'):
         player_pos = 'East'
+        if(player.IsDealer()):
+            player_pos += ' (D)'
     elif(player.GetPosition() == 'S'):
         player_pos = 'South'
+        if(player.IsDealer()):
+            player_pos += ' (D)'
     elif(player.GetPosition() == 'W'):
         player_pos = 'West'
+        if(player.IsDealer()):
+            player_pos += ' (D)'
     if(player.IsVulnerable()):
         color = VUL_COLOR
     else:
