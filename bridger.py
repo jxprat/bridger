@@ -39,9 +39,11 @@ LOGO_ICO = "images/bridger.png"
 SUITS = ('C', 'S', 'H', 'D')  # Clubs, Spades, Hearts, Daemonds
 RANK = ('A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K')
 CARDINAL_POINTS = ('N', 'E', 'S', 'W')
-
 VALUES = {'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'C': 0, 'D': 20, 'H': 40, 'S': 60}
 
+SUBASTA = ('1C', '1D', '1H', '1S', '1NT', '2C', '2D', '2H', '2S', '2NT',
+    '3C', '3D', '3H', '3S', '3NT', '4C', '4D', '4H', '4S', '4NT', '5C', '5D', '5H', '5S', '5NT',
+    '6C', '6D', '6H', '6S', '6NT', '7C', '7D', '7H', '7S', '7NT')
 # *********************************************************************
 # Class Card
 # *********************************************************************
@@ -210,14 +212,14 @@ class Hand:
         return hp
 
 ### Retocar porque hay que tener mas cosas en consideracion (que no sea triunfo, honores secos, ...)
-    def DistributionPoints(self):
+    def DistributionPoints(self, triump):
         dp = 0
         for s in SUITS:
-            if(self.HowMany(s) == 0):
+            if(self.HowMany(s) == 0 and triump != s):
                 dp += 3
-            elif(self.HowMany(s) == 1):
+            elif(self.HowMany(s) == 1 and triump != s):
                 dp += 2
-            elif(self.HowMany(s) == 2):
+            elif(self.HowMany(s) == 2 and triump != s):
                 dp += 1
         return dp
 
