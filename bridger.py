@@ -273,10 +273,10 @@ class BridgePlayer:
         return self.PlayerPosition
 
     def set_Vulnerability(self, v):
-        self.PlayerVulnerability = v
+        self.Vulnerability = v
 
-    def isVulnerable(self):
-        return self.PlayerVulnerability
+    def IsVulnerable(self):
+        return self.Vulnerability
 
     def set_Hand(self, newHand):
         self.PlayerHand = newHand
@@ -287,7 +287,7 @@ class BridgePlayer:
     def set_Dealer(self, d):
         self.isPlayerDealer = d
 
-    def isDealer(self):
+    def IsDealer(self):
         return self.isPlayerDealer
 
 
@@ -476,7 +476,7 @@ def card2filename(card):
     suit = card.GetSuit().lower()
     return filename + rank + suit + '.gif'
 
-def draw_hand(scr, posX, posY, player, visible, color):
+def draw_hand(scr, posX, posY, player, visible, cor):
     delta = 0
     for card in player.get_Hand():
         if (visible):  # Show card
@@ -493,6 +493,10 @@ def draw_hand(scr, posX, posY, player, visible, color):
         player_pos = 'South'
     elif(player.GetPosition() == 'W'):
         player_pos = 'West'
+    if(player.IsVulnerable()):
+        color = VUL_COLOR
+    else:
+        color = NOT_VUL_COLOR
     pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
     mytext = FontGame.render(player_pos, True, (0, 0, 0))
     scr.blit(mytext, (posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
