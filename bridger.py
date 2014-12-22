@@ -303,6 +303,9 @@ class Bridge:
         self.eastP = BridgePlayer('E')
         self.southP = BridgePlayer('S')
         self.westP = BridgePlayer('W')
+        # Bridge Game should have a final contract, who win it, ...
+        self.Bazas = None # 1, 2, 3, ... 7
+        self.Triump = None # C, D, H, S, NT 
 
     def NewGame(self, dealer, vul):
         self.bridgeDeck = Deck()
@@ -327,6 +330,8 @@ class Bridge:
             self.southP.set_Dealer(True)
         elif(dealer == 'W'):
             self.westP.set_Dealer(True)
+        self.Contract = None
+        self.Triump = None
 
 # -----------------------------------------------------
 # SetDealer
@@ -375,6 +380,28 @@ class Bridge:
 # -----------------------------------------------------
     def GetTurn(self):
         return self.Turn
+
+# -----------------------------------------------------
+# SetContract
+#   IN      Integer (1, 2, 3. ... 7) Representing the number of "bazas" to win
+#   OUT     
+# -----------------------------------------------------
+def SetContract(self, bazas):
+    self.Bazas = bazas
+
+def GetContract(self):
+    return self.Bazas
+
+# -----------------------------------------------------
+# SetTriump
+#   IN      char (S, H, D, C, NT)
+#   OUT     
+# -----------------------------------------------------
+def SetTriump(self, tr):
+    self.Triump = tr
+
+def GetTriump(self):
+    return self.Triump
 
 # -----------------------------------------------------
 # DealCards
