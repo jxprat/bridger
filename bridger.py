@@ -318,6 +318,14 @@ class Bridge:
         self.eastP.SetVulnerability(vul[1])
         self.southP.SetVulnerability(vul[2])
         self.westP.SetVulnerability(vul[3])
+        if(dealer == 'N'):
+            self.northP.set_Dealer(True)
+        elif(dealer == 'E'):
+            self.eastP.set_Dealer(True)
+        elif(dealer == 'S'):
+            self.southP.set_Dealer(True)
+        elif(dealer == 'W'):
+            self.westP.set_Dealer(True)
 
 # -----------------------------------------------------
 # SetDealer
