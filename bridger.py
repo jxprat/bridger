@@ -305,7 +305,7 @@ class Bridge:
         self.southP = BridgePlayer('S')
         self.westP = BridgePlayer('W')
 
-    def NewGame(self, dealer, vul = None):
+    def NewGame(self, dealer, vul):
         self.bridgeDeck = Deck()
         self.bridgeDeck.Shuffle()
         self.Dealer = dealer
@@ -511,20 +511,24 @@ def GetIndexCardFromMouse(posX, player_hand):
             ndx = 12
     return ndx
 
-def CardUp(scr, ndx, player_hand):
+def CardUp(scr, ndx, player):
     posX = EXTERNAL_MARGIN + CARD_RULER_WIDTH + INTERNAL_MARGIN
     posY = WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT
     scr.fill(BG_COLOR, (posX - INTERNAL_MARGIN, posY - DELTA_SELECT, CARD_RULER_WIDTH, CARD_HEIGHT))
     delta = 0
-    for card in player_hand:
+    for card in player.get_Hand():
         img = load_image(card2filename(card))
         if (delta == ndx and ndx != -1):
             scr.blit(img, (posX + delta * VISUAL_CARD_WIDTH, posY - DELTA_SELECT))
         else:
             scr.blit(img, (posX + delta * VISUAL_CARD_WIDTH, posY))
         delta += 1
-    pygame.draw.rect(scr, VUL_COLOR, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
-    mytext = FontGame.render("North", True, (0, 0, 0))
+    if(player.IsVulnerable()):
+        color = VUL_COLOR
+    else:
+        color = NOT_VUL_COLOR
+    pygame.draw.rect(scr, color, [posX - INTERNAL_MARGIN, posY + CARD_HEIGHT - CARD_RULER_HEIGHT, CARD_RULER_WIDTH, CARD_RULER_HEIGHT], 0)
+    mytext = FontGame.render("South", True, (0, 0, 0))
     scr.blit(mytext, (posX, posY + CARD_HEIGHT - CARD_RULER_HEIGHT + 5))
     pygame.display.flip()
 
@@ -625,7 +629,7 @@ def DrawGeneralInfoWindow(scr):
 # Main Bridge Init ...
 # *********************************************************************
 Game = Bridge()
-Game.NewGame('N')
+Game.NewGame('N', [])
 # *********************************************************************
 # Graphic part ...
 # *********************************************************************
@@ -650,7 +654,7 @@ while True:
         elif (event.type == KEYDOWN):  # Key pressed ...
             keys = pygame.key.get_pressed()  # Witch key?
             if keys[K_n]:  # Test key in keys[]
-                Game.NewGame('N')
+                Game.NewGame('N', ['N', 'S'])
 
                 draw_hand(screen, EXTERNAL_MARGIN + 3 * INTERNAL_MARGIN + 12 * VISUAL_CARD_WIDTH + CARD_WIDTH, EXTERNAL_MARGIN, Game.GetPlayer('N'), False)
                 draw_hand(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - INTERNAL_MARGIN - CARD_WIDTH - 12 * VISUAL_CARD_WIDTH, EXTERNAL_MARGIN + CARD_HEIGHT + DELTA_SPACE, Game.GetPlayer('E'), False)
@@ -688,9 +692,9 @@ while True:
     finalX = initX + (len(Game.GetHand('S')) - 1) * VISUAL_CARD_WIDTH + CARD_WIDTH
     if ((mouse_pos[1] > initY) and (mouse_pos[1] < finalY) and (mouse_pos[0] > initX) and (mouse_pos[0] < finalX)):
         ndx = GetIndexCardFromMouse(mouse_pos[0], Game.GetHand('S'))
-        CardUp(screen, ndx, Game.GetHand('S'))
+        CardUp(screen, ndx, Game.GetPlayer('S'))
     else:
-        CardUp(screen, -1, Game.GetHand('S'))
+        CardUp(screen, -1, Game.GetPlayer('S'))
 
     # Draw the Bidding Control Window ...
     DrawBiddingWindow(screen, WINDOW_WIDTH - EXTERNAL_MARGIN - CARD_RULER_WIDTH + INTERNAL_MARGIN, WINDOW_HEIGHT - EXTERNAL_MARGIN - CARD_HEIGHT)
