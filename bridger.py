@@ -44,6 +44,9 @@ VALUES = {'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 
 SUBASTA = ('1C', '1D', '1H', '1S', '1NT', '2C', '2D', '2H', '2S', '2NT',
     '3C', '3D', '3H', '3S', '3NT', '4C', '4D', '4H', '4S', '4NT', '5C', '5D', '5H', '5S', '5NT',
     '6C', '6D', '6H', '6S', '6NT', '7C', '7D', '7H', '7S', '7NT')
+
+VULNERABILITIES = ('NONE', 'NS', 'EW', 'ALL', 'NS', 'EW', 'ALL', 'NONE', 
+    'EW', 'ALL', 'NONE', 'NS', 'ALL', 'NONE', 'NS', 'EW')
 # *********************************************************************
 # Class Card
 # *********************************************************************
@@ -212,14 +215,14 @@ class Hand:
         return hp
 
 ### Retocar porque hay que tener mas cosas en consideracion (que no sea triunfo, honores secos, ...)
-    def DistributionPoints(self, triump):
+    def DistributionPoints(self, trump):
         dp = 0
         for s in SUITS:
-            if(self.HowMany(s) == 0 and triump != s):
+            if(self.HowMany(s) == 0 and trump != s):
                 dp += 3
-            elif(self.HowMany(s) == 1 and triump != s):
+            elif(self.HowMany(s) == 1 and trump != s):
                 dp += 2
-            elif(self.HowMany(s) == 2 and triump != s):
+            elif(self.HowMany(s) == 2 and trump != s):
                 dp += 1
         return dp
 
@@ -307,7 +310,7 @@ class Bridge:
         self.westP = BridgePlayer('W')
         # Bridge Game should have a final contract, who win it, ...
         self.Bazas = None # 1, 2, 3, ... 7
-        self.Triump = None # C, D, H, S, NT 
+        self.Trump = None # C, D, H, S, NT 
 
     def NewGame(self, dealer, vul):
         self.bridgeDeck = Deck()
@@ -333,7 +336,7 @@ class Bridge:
         elif(dealer == 'W'):
             self.westP.set_Dealer(True)
         self.Contract = None
-        self.Triump = None
+        self.Trump = None
 
 # -----------------------------------------------------
 # SetDealer
@@ -395,15 +398,15 @@ class Bridge:
         return self.Bazas
 
 # -----------------------------------------------------
-# SetTriump
+# SetTrump
 #   IN      char (S, H, D, C, NT)
 #   OUT     
 # -----------------------------------------------------
-    def SetTriump(self, tr):
-        self.Triump = tr
+    def SetTrump(self, tr):
+        self.Trump = tr
 
-    def GetTriump(self):
-        return self.Triump
+    def GetTrump(self):
+        return self.Trump
 
 # -----------------------------------------------------
 # DealCards
